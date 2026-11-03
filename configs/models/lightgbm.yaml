@@ -1,0 +1,15 @@
+# LightGBM on structured alert fields (production tenants and GUIDE).
+model_type: lightgbm
+preprocessor_kwargs: {}
+
+n_estimators: 500
+learning_rate: 0.03
+max_depth: 6
+num_leaves: 31
+min_child_samples: 20
+reg_alpha: 0.1
+reg_lambda: 0.1
+class_weight: balanced
+random_state: 42
+subsample: 0.8
+colsample_bytree: 0.8

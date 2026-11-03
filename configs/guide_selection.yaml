@@ -1,0 +1,56 @@
+# Pre-registered GUIDE organization selection and split rule (written before any GUIDE model result).
+# Consumed by scripts/build_guide_splits.py. Do not edit: the split fingerprints in guide_orgs.csv depend on it.
+archive:
+  source: "Kaggle dataset 'Microsoft Security Incident Prediction' (GUIDE), version 2"
+  archive_sha256: 23ea64ee8f950c77142935064b3e515f3be1e17120bc229233d932ed4a079ed3
+  files: [GUIDE_Train.csv, GUIDE_Test.csv]   # pooled; GUIDE_Test_Queue_Rankings.csv is not used
+incidents:
+  key: (OrgId, IncidentId), evidence rows of both files aggregated
+  renderer: riskfit/guide.py::incident_record -> riskfit/serialization.py::render_alert
+  label_map: {TruePositive: "True Positive - Malicious", BenignPositive: "True Positive - Benign", FalsePositive: "False Positive"}
+  drop: [no grade, more than one distinct grade]
+selection:
+  exclude_orgs: ["4", "9"]     # used during earlier development
+  min_incidents: 300           # no upper size cap
+  min_malicious: 10
+  min_each_other_class: 10
+  order_key: sha256("X4-GUIDE-org-" + OrgId) hex ascending
+  take: 12
+prompts:
+  unit: distinct model-input prompt within an organization (byte-identical rendered text)
+  prompt_id: "guide-<OrgId>-p<sha256(text)[:16]>"
+  prompt_label: majority incident grade; ties broken malicious > benign > false positive (every tie logged)
+  representative_record: the prompt's first incident by incident key, with id/alert_id and label replaced
+  eligibility: {min_prompts: 300, min_malicious_prompts: 10}
+  feasibility: at least one malicious-majority prompt in validation and in test, else skip and continue
+split:
+  sort: prompt id
+  test: {size: 0.15, random_state: 42, stratify: prompt label}
+  val: {size_of_remainder: 0.17647058823529413, random_state: 42, stratify: prompt label}
+expected:
+  orgs_in_order: ["78", "55", "56", "249", "97", "28", "26", "8", "38", "77", "36", "49"]
+  orgs_visited_in_hash_order: 93
+  incidents: 71576
+  prompts: 7160
+  test_prompts: 1079
+  test_malicious_prompts: 456
+  tied_prompts: 81
+  # sha256 of the incident -> prompt -> split membership table written by the builder
+  membership_csv_sha256: f71d6c7ebea93e7530eddab1c4011196cff99b82fa406b2e945a72dc03e5cec5
+  ties_csv_sha256: 31406ad31ef062d67d8a4d21c03bdc3c60975e9936d5891b9b289ebb3cb4e623
+training:
+  methods: [riskfit, ce, lightgbm]  # configs/models/{riskfit_guide,ce_guide,lightgbm}.yaml
+  epochs_ceiling: 20               # encoder models; early stopping patience 5 on validation accuracy
+  seed: 42                         # one training seed per organization
+analysis:
+  unit: per prompt (primary); incident-weighted secondary
+  matched_fpr: >-
+    validation-tuned threshold t (score > t flagged) with validation malicious FPR <= target; target = RiskFit's
+    default (argmax) test FPR on the same organization, or 1% / 2% / 5%
+  gate: 80% coverage; test-quantile (default) and deployable (tau from validation)
+  bootstrap: {replicates: 2000, seed: 42, unit: prompts resampled within organization, paired across methods}
+  paired_tests:
+    wilcoxon: two-sided signed-rank, zero_method wilcox
+    sign: exact two-sided binomial on non-ties
+    holm: within each family of comparisons
+    effect_bootstrap: {replicates: 10000, seed: 42}

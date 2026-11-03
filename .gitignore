@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+data/guide_raw/
+data/guide_splits/
+data/predictions/
+data/hosted_inputs*.jsonl
+cache/
+results/
+out/
+.env
+*.key
