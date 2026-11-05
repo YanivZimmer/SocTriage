@@ -2,9 +2,9 @@
 
 Code, released per-prompt outputs and aggregate results for the paper
 
-> **Can Small Defenders Triage Without Frontier Models? Open Local Models versus Hosted Decision Models for
+> **Can Small Parties Triage Without Frontier Models? Open Local Models versus Hosted Decision Models for
 > Human-on-the-Loop SOC Triage** (AICS 2027, AAAI-27 Workshop on AI for Cyber Security).
-> Authors: Yaniv Zimmer, Yuval Goldberg, Noam Cohen. Contact: yaniv.zimmer@torq.io
+> Authors: Yaniv Zimmer, Yuval Goldberg, Oron Tzemach, Noam Cohen. Contact: yaniv.zimmer@torq.io
 > The final paper is in [`paper/RiskFit_AICS2027.pdf`](paper/RiskFit_AICS2027.pdf).
 
 The paper scores SOC alert triage by unreviewed misses against false escalations, with one miss costing as much
