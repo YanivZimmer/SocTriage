@@ -1,6 +1,0 @@
-metric,value,scope
-spearman_val_vs_test:cost10,-0.0969,median over 9 tenant-folds
-spearman_val_vs_test:macro_f1,-0.1401,median over 9 tenant-folds
-"malicious alerts per validation fold, tenant A",2.0,tenant
-"malicious alerts per validation fold, tenant B",4.0,tenant
-"malicious alerts per validation fold, tenant C",2.0,tenant

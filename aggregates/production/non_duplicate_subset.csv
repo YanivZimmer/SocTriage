@@ -8,7 +8,7 @@ non-duplicate: max cos < 0.95,MaxSim,all,280,37,18,7,25,35,17,17,6,1,25
 non-duplicate: max cos < 0.95,kNN (frozen),all,280,37,14,3,25,20,22,16,9,0,20
 non-duplicate: max cos < 0.95,LightGBM,all,280,37,18,14,19,31,17,16,11,3,16
 non-duplicate: max cos < 0.95,SetFit-LoRA,all,280,37,15,7,24,29,18,11,8,1,26
-non-duplicate: max cos < 0.95,Qwen3-LoRA,all,280,37,19,6,26,35,23,19,5,1,23
+non-duplicate: max cos < 0.95,Tiny Decision,all,280,37,19,6,26,35,23,19,5,1,23
 non-duplicate: max cos < 0.95,Gemini zero-shot,all,280,37,18,48,,,,,13,36,7
 non-duplicate: max cos < 0.95,Gemini + exemplar,all,280,37,26,37,,,,,5,16,9
 non-duplicate: max cos < 0.95,Decisions zero-shot,all,280,37,37,192,,,,,0,139,2
@@ -22,7 +22,7 @@ non-duplicate: no exact text duplicate (case/whitespace-normalized),MaxSim,all,1
 non-duplicate: no exact text duplicate (case/whitespace-normalized),kNN (frozen),all,1354,72,32,8,55,45,52,31,16,2,34
 non-duplicate: no exact text duplicate (case/whitespace-normalized),LightGBM,all,1354,72,45,20,52,100,47,39,12,6,30
 non-duplicate: no exact text duplicate (case/whitespace-normalized),SetFit-LoRA,all,1354,72,38,14,52,65,43,26,16,4,44
-non-duplicate: no exact text duplicate (case/whitespace-normalized),Qwen3-LoRA,all,1354,72,45,14,56,75,48,35,9,5,41
+non-duplicate: no exact text duplicate (case/whitespace-normalized),Tiny Decision,all,1354,72,45,14,56,75,48,35,9,5,41
 non-duplicate: no exact text duplicate (case/whitespace-normalized),Gemini zero-shot,all,1354,72,43,254,,,,,21,181,12
 non-duplicate: no exact text duplicate (case/whitespace-normalized),Gemini + exemplar,all,1354,72,54,72,,,,,10,41,16
 non-duplicate: no exact text duplicate (case/whitespace-normalized),Decisions zero-shot,all,1354,72,69,1047,,,,,1,822,4
@@ -36,7 +36,7 @@ non-duplicate: no exact duplicate after digit/hex/GUID masking,MaxSim,all,1350,7
 non-duplicate: no exact duplicate after digit/hex/GUID masking,kNN (frozen),all,1350,72,32,8,55,45,52,31,16,2,34
 non-duplicate: no exact duplicate after digit/hex/GUID masking,LightGBM,all,1350,72,45,20,52,100,47,39,12,6,30
 non-duplicate: no exact duplicate after digit/hex/GUID masking,SetFit-LoRA,all,1350,72,38,14,52,65,43,26,16,4,44
-non-duplicate: no exact duplicate after digit/hex/GUID masking,Qwen3-LoRA,all,1350,72,45,14,56,75,48,35,9,5,41
+non-duplicate: no exact duplicate after digit/hex/GUID masking,Tiny Decision,all,1350,72,45,14,56,75,48,35,9,5,41
 non-duplicate: no exact duplicate after digit/hex/GUID masking,Gemini zero-shot,all,1350,72,43,254,,,,,21,181,12
 non-duplicate: no exact duplicate after digit/hex/GUID masking,Gemini + exemplar,all,1350,72,54,72,,,,,10,41,16
 non-duplicate: no exact duplicate after digit/hex/GUID masking,Decisions zero-shot,all,1350,72,69,1045,,,,,1,821,4
@@ -50,7 +50,7 @@ full test set (reference),MaxSim,all,1492,73,45,17,56,72,40,29,7,4,42
 full test set (reference),kNN (frozen),all,1492,73,32,8,55,48,52,31,16,2,35
 full test set (reference),LightGBM,all,1492,73,45,23,52,108,47,39,13,6,30
 full test set (reference),SetFit-LoRA,all,1492,73,38,14,52,70,43,27,16,4,45
-full test set (reference),Qwen3-LoRA,all,1492,73,45,14,56,78,48,35,10,5,41
+full test set (reference),Tiny Decision,all,1492,73,45,14,56,78,48,35,10,5,41
 full test set (reference),Gemini zero-shot,all,1492,73,43,258,,,,,21,181,13
 full test set (reference),Gemini + exemplar,all,1492,73,54,72,,,,,11,41,16
 full test set (reference),Decisions zero-shot,all,1492,73,70,1170,,,,,1,945,4

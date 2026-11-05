@@ -1,23 +1,19 @@
 gate,method,misses,false_esc,coverage,on_frontier,dominated_by,cost_c5,cost_c10,cost_c20,cost_c50
 (a) per-org test top 80% by confidence,RiskFit,11,46,0.804449,True,,101,156,266,596
-(a) per-org test top 80% by confidence,CE,15,35,0.804449,True,,110,185,335,785
-(a) per-org test top 80% by confidence,LightGBM,31,39,0.804449,False,CE,194,349,659,1589
+(a) per-org test top 80% by confidence,CE,15,35,0.804449,False,Tiny Decision,110,185,335,785
+(a) per-org test top 80% by confidence,LightGBM,31,39,0.804449,False,CE; kNN; Tiny Decision,194,349,659,1589
+(a) per-org test top 80% by confidence,MaxSim,38,17,0.804449,True,,207,397,777,1917
+(a) per-org test top 80% by confidence,kNN,21,28,0.804449,True,,133,238,448,1078
+(a) per-org test top 80% by confidence,Tiny Decision,12,30,0.804449,True,,90,150,270,630
 (a) per-org test top 80% by confidence,Decisions zero-shot,0,497,0.804449,True,,497,497,497,497
 (a) per-org test top 80% by confidence,Decisions + exemplar,8,420,0.804449,True,,460,500,580,820
 (a) per-org test top 80% by confidence,Jev zero-shot,4,492,0.804449,True,,512,532,572,692
-(a) per-org test top 80% by confidence,Jev + exemplar,27,381,0.804449,False,RiskFit; CE; Opus + exemplar; Decisions + 5 exemplars,516,651,921,1731
+(a) per-org test top 80% by confidence,Jev + exemplar,27,381,0.804449,False,RiskFit; CE; kNN; Tiny Decision; Opus + exemplar; Decisions + 5 exemplars; Decisions + 20 exemplars,516,651,921,1731
 (a) per-org test top 80% by confidence,Opus zero-shot,5,490,0.804449,True,,515,540,590,740
-(a) per-org test top 80% by confidence,Opus + exemplar,16,241,0.804449,False,RiskFit; CE,321,401,561,1041
-(a) per-org test top 80% by confidence,Decisions + 5 exemplars,24,109,0.804449,False,RiskFit; CE,229,349,589,1309
-(a) per-org test top 80% by confidence,Jev + 5 exemplars,38,245,0.804449,False,RiskFit; CE; LightGBM; Opus + exemplar; Decisions + 5 exemplars,435,625,1005,2145
+(a) per-org test top 80% by confidence,Opus + exemplar,16,241,0.804449,False,RiskFit; CE; Tiny Decision; Decisions + 20 exemplars,321,401,561,1041
+(a) per-org test top 80% by confidence,Decisions + 5 exemplars,24,109,0.804449,False,RiskFit; CE; kNN; Tiny Decision; Decisions + 20 exemplars,229,349,589,1309
+(a) per-org test top 80% by confidence,Jev + 5 exemplars,38,245,0.804449,False,RiskFit; CE; LightGBM; MaxSim; kNN; Tiny Decision; Opus + exemplar; Decisions + 5 exemplars; Decisions + 20 exemplars; Jev + 20 exemplars,435,625,1005,2145
+(a) per-org test top 80% by confidence,Decisions + 20 exemplars,12,90,0.804449,False,RiskFit; Tiny Decision,150,210,330,690
+(a) per-org test top 80% by confidence,Jev + 20 exemplars,29,213,0.804449,False,RiskFit; CE; kNN; Tiny Decision; Decisions + 5 exemplars; Decisions + 20 exemplars,358,503,793,1663
 (a) per-org test top 80% by confidence,CyberSecQwen-4B zero-shot,0,502,0.804449,False,Decisions zero-shot,502,502,502,502
-(b) deployable: tau at 80% validation coverage,RiskFit,12,47,0.793327,True,,107,167,287,647
-(b) deployable: tau at 80% validation coverage,CE,15,33,0.801668,True,,108,183,333,783
-(b) deployable: tau at 80% validation coverage,LightGBM,29,37,0.802595,False,CE,182,327,617,1487
-(b) deployable: tau at 80% validation coverage,Decisions zero-shot,0,501,0.810009,True,,501,501,501,501
-(b) deployable: tau at 80% validation coverage,Decisions + exemplar,10,416,0.810009,True,,466,516,616,916
-(b) deployable: tau at 80% validation coverage,Jev zero-shot,4,505,0.822984,False,Decisions zero-shot; CyberSecQwen-4B zero-shot,525,545,585,705
-(b) deployable: tau at 80% validation coverage,Jev + exemplar,28,395,0.824838,False,RiskFit; CE; Decisions + 5 exemplars,535,675,955,1795
-(b) deployable: tau at 80% validation coverage,Decisions + 5 exemplars,27,109,0.823911,False,RiskFit; CE,244,379,649,1459
-(b) deployable: tau at 80% validation coverage,Jev + 5 exemplars,42,247,0.828545,False,RiskFit; CE; LightGBM; Decisions + 5 exemplars,457,667,1087,2347
-(b) deployable: tau at 80% validation coverage,CyberSecQwen-4B zero-shot,0,501,0.799815,True,,501,501,501,501
+(a) per-org test top 80% by confidence,Qwen3-4B base zero-shot,59,437,0.804449,False,RiskFit; CE; LightGBM; MaxSim; kNN; Tiny Decision; Decisions + exemplar; Jev + exemplar; Opus + exemplar; Decisions + 5 exemplars; Jev + 5 exemplars; Decisions + 20 exemplars; Jev + 20 exemplars,732,1027,1617,3387

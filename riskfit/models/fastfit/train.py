@@ -107,6 +107,36 @@ class MaliciousBalancedBatchSampler:
             yield batch
 
 
+class HingeWindowMixin:
+    """Tells the model where each gradient-accumulation window starts (needed by the 'accum' hinge; otherwise only
+    used for the hinge-activity statistics)."""
+
+    def get_batch_samples(self, epoch_iterator, num_batches, device):
+        batch_samples, num_items_in_batch = super().get_batch_samples(epoch_iterator, num_batches, device)
+        model = self.model
+        if hasattr(model, "hinge_window_begin") and len(batch_samples) > 0:
+            model.hinge_window_begin(len(batch_samples))
+        return batch_samples, num_items_in_batch
+
+
+class HingeLogCallback(transformers.TrainerCallback):
+    """Per-epoch hinge activity -> stdout (HINGE_EPOCH) and, if $RISKFIT_HINGE_LOG is set, that JSONL file."""
+
+    def __init__(self, model):
+        self._model = model
+
+    def on_epoch_end(self, args, state, control, **kwargs):
+        if not hasattr(self._model, "flush_hinge_epoch"):
+            return
+        rec = self._model.flush_hinge_epoch(float(state.epoch or 0))
+        rec["global_step"] = int(state.global_step)
+        print("HINGE_EPOCH " + json.dumps(rec, sort_keys=True), flush=True)
+        path = os.environ.get("RISKFIT_HINGE_LOG")
+        if path:
+            with open(path, "a") as h:
+                h.write(json.dumps(rec, sort_keys=True) + "\n")
+
+
 class MaliciousBalancedTrainer(Trainer):
     """Trainer variant that enforces balanced malicious batches for training only."""
 
@@ -874,7 +904,7 @@ class FastFitTrainer:
         else:
             tokenizer_kwarg = {"tokenizer": self.tokenizer}
 
-        trainer_cls = Trainer
+        trainer_cls = type("WindowTrainer", (HingeWindowMixin, Trainer), {})
         trainer_kwargs = {}
         if self.training_args.do_train and self.balance_malicious_batches:
             if self.malicious_label_name not in self.label_to_id:
@@ -882,7 +912,7 @@ class FastFitTrainer:
                     f"Cannot balance malicious batches: label {self.malicious_label_name!r} not present in training labels"
                 )
             batch_labels = self.train_dataset["label"]
-            trainer_cls = MaliciousBalancedTrainer
+            trainer_cls = type("WindowBalancedTrainer", (HingeWindowMixin, MaliciousBalancedTrainer), {})
             trainer_kwargs["malicious_batch_sampler"] = MaliciousBalancedBatchSampler(
                 labels=batch_labels,
                 malicious_label_id=self.label_to_id[self.malicious_label_name],
@@ -897,7 +927,7 @@ class FastFitTrainer:
             eval_dataset=self.eval_dataset if self.training_args.do_eval else None,
             compute_metrics=compute_metrics,
             data_collator=data_collator,
-            callbacks=self._trainer_callbacks if self._trainer_callbacks else None,
+            callbacks=list(self._trainer_callbacks or []) + [HingeLogCallback(self.model)],
             **trainer_kwargs,
             **tokenizer_kwarg,
         )

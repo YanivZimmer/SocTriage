@@ -5,10 +5,10 @@ data/guide_raw/
 data/guide_splits/
 data/predictions/
 data/hosted_inputs*.jsonl
-cache/
-results/
-out/
+/cache/
+/results/
+/out/
 .env
 *.key
-figures/
-models/
+/figures/
+/models/

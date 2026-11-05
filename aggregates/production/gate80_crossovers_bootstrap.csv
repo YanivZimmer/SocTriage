@@ -1,7 +1,3 @@
 pair,point_c_star,point_note,boot_c_star_p2.5,boot_c_star_median,boot_c_star_p97.5,share_reps_c_star_undefined (equal misses),share_reps_c_star_le_0 (one method dominates)
-MaxSim vs RiskFit rho=0.8,21.0,misses 7 vs 6; false esc 4 vs 25,-25.0,-1.866,25.0,0.142,0.4335
-MaxSim vs kNN (frozen),0.222,misses 7 vs 16; false esc 4 vs 2,-0.333,0.167,1.167,0.0065,0.2905
 MaxSim vs Decisions + exemplar,21.429,misses 7 vs 0; false esc 4 vs 154,10.859,21.833,70.55,0.0015,0.0
-RiskFit rho=0.8 vs kNN (frozen),2.3,misses 6 vs 16; false esc 25 vs 2,1.111,2.5,8.783,0.0065,0.0025
 RiskFit rho=0.8 vs Decisions + exemplar,21.5,misses 6 vs 0; false esc 25 vs 154,9.33,18.714,61.0,0.002,0.0
-kNN (frozen) vs Decisions + exemplar,9.5,misses 16 vs 0; false esc 2 vs 154,5.958,9.5,18.0,0.0,0.0

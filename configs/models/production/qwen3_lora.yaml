@@ -1,5 +1,6 @@
 # Production-tenant recipe (private data not released). Runs on any split in the same JSONL format.
-# Qwen3-0.6B-Base with LoRA, FP32.
+# The tiny local decision model ("Tiny Decision" in the paper): Qwen3-0.6B-Base with LoRA as a sequence
+# classifier with a trained score head, FP32.
 model_type: qwen_lora
 preprocessor_kwargs:
   model_name: "Qwen/Qwen3-0.6B-Base"

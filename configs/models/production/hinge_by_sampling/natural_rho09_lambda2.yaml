@@ -1,0 +1,55 @@
+# Production-tenant recipe (private data not released). Runs on any split in the same JSONL format.
+# Hinge-by-sampling experiment (Table 3), seeds 0-2: natural sampling, hinge rho=0.9, lambda=2 over the 36-alert accumulation window.
+model_type: fastfitlora
+preprocessor_kwargs:
+  model_name: "cisco-ai/SecureBERT2.0-biencoder"
+  max_tokens: 1024
+  apply_weighting: true
+  gold_weight: 2
+  silver_weight: 1
+
+model_name_or_path: "cisco-ai/SecureBERT2.0-biencoder"
+use_lora: true
+lora_r: 32
+lora_alpha: 64
+lora_dropout: 0.1
+lora_target_modules: ["Wqkv", "Wo"]
+
+num_train_epochs: 50
+per_device_train_batch_size: 4
+per_device_eval_batch_size: 8
+max_text_length: 1024
+num_repeats: 1
+learning_rate: 0.0001
+warmup_ratio: 0.1
+fp16: false
+gradient_accumulation_steps: 9
+balance_malicious_batches: false  # natural sampling (class ratio of the data)
+malicious_label_name: "True Positive - Malicious"
+class_weight_mode: null
+
+clf_loss_factor: 1.0
+sim_loss_factor: 0.5
+inference_type: clf
+
+recall_constraint_rho: 0.9
+recall_constraint_lambda: 2.0
+recall_hinge_window: accum  # micro: soft recall per micro-batch; accum: per accumulation window
+tversky_loss_weight: 0.0
+tversky_alpha: 0.0
+tversky_beta: 0.0
+tversky_gamma: 1.0
+false_positive_penalty_beta: 0.0
+constrained_reward_metric: none
+constrained_reward_weight: 0.0
+adaptive_dual_enabled: false
+adaptive_dual_initial_lambda: 0.0
+adaptive_dual_eta: 0.05
+adaptive_dual_max_lambda: 5.0
+adaptive_dual_ema_decay: 0.9
+adaptive_dual_warmup_steps: 0
+adaptive_dual_update_interval_steps: 1
+
+early_stopping_patience: 5
+metric_for_best_model: eval_accuracy
+greater_is_better: true

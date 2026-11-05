@@ -1,0 +1,2 @@
+source,rhos,n_units,spearman,p,mean_R_rho0.7,mean_R_rho0.8,mean_R_rho0.9,mean_R_rho0.95
+"RiskFit rho in {0.7, 0.8, 0.9, 0.95} (lambda=2, gamma=0.5), all tenant-fold-seed units","[0.7, 0.8, 0.9, 0.95]",144,0.008,0.922,0.718,0.740,0.729,0.737

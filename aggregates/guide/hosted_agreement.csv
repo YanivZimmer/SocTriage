@@ -1,7 +1,0 @@
-pair,split,condition,n,exact_3class_agreement,kappa_3class,binary_mal_agreement,spearman_p_malicious
-decisions vs jev,test,zero-shot,1079,0.936052,0.069048,0.936052,0.802038
-decisions vs jev,test,+ exemplar,1079,0.813716,0.386996,0.843373,0.917261
-opus vs jev,test,zero-shot,1079,0.893420,0.162973,0.906395,0.704259
-opus vs jev,test,+ exemplar,1079,0.683967,0.341722,0.775718,0.904379
-opus vs decisions,test,zero-shot,1079,0.927711,0.042035,0.929564,0.729161
-opus vs decisions,test,+ exemplar,1079,0.732159,0.372832,0.745134,0.895574

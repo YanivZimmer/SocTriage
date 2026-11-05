@@ -1,134 +1,110 @@
 GUIDE organizations: 12; test prompts 1079 (456 malicious, 623 non-malicious)
-Every line names the place in the paper (draft fix20) that quotes the number.
+Every line names the place in the final paper (AICS 2027) that quotes the number. Gate = 80% test-quantile gate.
 
-Figure 2 (left panel) and RQ1 'Default and tuned operating points': default verdicts, caught / false escalations
-  RiskFit                      431/79  kappa 0.799  cost c=10 329
-  CE                           429/70  kappa 0.813  cost c=10 340
-  LightGBM                     395/65  kappa 0.746  cost c=10 675
-  Decisions zero-shot          452/620  kappa -0.003  cost c=10 660
-  Decisions + exemplar         432/500  kappa 0.140  cost c=10 740
-  Jev zero-shot                430/581  kappa 0.007  cost c=10 841
-  Jev + exemplar               407/448  kappa 0.134  cost c=10 938
-  Opus zero-shot               424/580  kappa 0.001  cost c=10 900
-  Opus + exemplar              416/261  kappa 0.478  cost c=10 661
-  Decisions + 5 exemplars      416/159  kappa 0.640  cost c=10 559
-  Jev + 5 exemplars            399/292  kappa 0.386  cost c=10 862
-  CyberSecQwen-4B zero-shot    454/623  kappa -0.003  cost c=10 643
-  hosted models: caught 399-452, false escalations 159-620
-  CyberSecQwen-4B labeled 1077 of 1079 test prompts malicious
+Table 1 (GUIDE column), cost 10*misses+FE at c=10:
+  80% gate: RiskFit 156 / CE 185; Tiny Decision 150; Decisions + exemplar 500; Decisions + 20 exemplars 210
+  full coverage: RiskFit 329; Decisions + exemplar 740
+  crossover c* vs Decisions + exemplar: RiskFit 124.7 / CE 55.0
 
-Table 3 (tab:threshold): validation-tuned per-organization threshold, caught / false escalations (hosted: predicate probability); * = lowest cost 10*misses+FE in the column
-  RiskFit                      @RiskFit 428/100*   @1% 237/10   @2% 270/20*   @5% 304/38
-  CE                           @RiskFit 421/101   @1% 262/18*   @2% 268/21   @5% 314/47*
-  LightGBM                     @RiskFit 396/82   @1% 206/12   @2% 228/21   @5% 254/46
-  Decisions + exemplar         @RiskFit 305/91   @1% 55/11   @2% 66/18   @5% 84/30
-  Decisions + 5 exemplars      @RiskFit 328/101   @1% 81/23   @2% 88/30   @5% 110/54
-  Jev + exemplar               @RiskFit 299/86   @1% 37/11   @2% 48/16   @5% 87/40
-  Jev + 5 exemplars            @RiskFit 350/113   @1% 61/20   @2% 76/25   @5% 85/30
-  RQ1 text: cost at c=10 at RiskFit's FPR: RiskFit 380, CE 451, LightGBM 682, Decisions + exemplar 1601, Decisions + 5 exemplars 1381, Jev + exemplar 1656, Jev + 5 exemplars 1173
-  zero-shot conditions at RiskFit's FPR (not in the table): Decisions zero-shot 194/82, Jev zero-shot 241/98
+Table 2 (tab:guidegate): 80% gate misses/FE, c* vs RiskFit and CE (inf = cheaper at every c), ROC-AUC mean +- sd over orgs
+  RiskFit                          11/46  cost c=10   156  c*     -- /     --   AUC 0.855 +- 0.138
+  CE                               15/35  cost c=10   185  c*     -- /     --   AUC 0.881 +- 0.099
+  LightGBM                         31/39  cost c=10   349  c*     -- /     --   AUC 0.853 +- 0.095
+  MaxSim                           38/17  cost c=10   397  c*     -- /     --   AUC 0.859 +- 0.136
+  kNN                              21/28  cost c=10   238  c*     -- /     --   AUC 0.846 +- 0.083
+  Tiny Decision                    12/30  cost c=10   150  c*     -- /     --   AUC 0.878 +- 0.114
+  Decisions zero-shot              0/497  cost c=10   497  c*   41.0 /   30.8   AUC 0.490 +- 0.174
+  Decisions + exemplar             8/420  cost c=10   500  c*  124.7 /   55.0   AUC 0.656 +- 0.207
+  Jev zero-shot                    4/492  cost c=10   532  c*   63.7 /   41.5   AUC 0.446 +- 0.125
+  Jev + exemplar                  27/381  cost c=10   651  c*    inf /    inf   AUC 0.604 +- 0.238
+  Opus zero-shot                   5/490  cost c=10   540  c*   74.0 /   45.5   AUC 0.475 +- 0.121
+  Opus + exemplar                 16/241  cost c=10   401  c*    inf /    inf   AUC 0.637 +- 0.215
+  Decisions + 5 exemplars         24/109  cost c=10   349  c*    inf /    inf   AUC 0.757 +- 0.211
+  Jev + 5 exemplars               38/245  cost c=10   625  c*    inf /    inf   AUC 0.717 +- 0.185
+  Decisions + 20 exemplars         12/90  cost c=10   210  c*    inf /   18.3   AUC 0.862 +- 0.095
+  Jev + 20 exemplars              29/213  cost c=10   503  c*    inf /    inf   AUC 0.809 +- 0.138
+  CyberSecQwen-4B zero-shot        0/502  cost c=10   502  c*   41.5 /   31.1   AUC 0.449 +- 0.158
+  Qwen3-4B base zero-shot         59/437  cost c=10  1027  c*    inf /    inf   AUC 0.445 +- 0.100
+  caption: kNN misses range 19-21 with tie order at the cutoff
 
-Table 4 (tab:guidegate) and RQ2 'Confidence gating': 80% test-quantile gate
-  method                         miss/FE  cost c=10  c* vs RiskFit  c* vs CE   ROC-AUC mean+-sd over orgs
-  RiskFit                          11/46        156            --        --   0.855 +- 0.138
-  CE                               15/35        185            --        --   0.881 +- 0.099
-  LightGBM                         31/39        349            --        --   0.853 +- 0.095
-  Decisions zero-shot              0/497        497          41.0      30.8   0.490 +- 0.174
-  Decisions + exemplar             8/420        500         124.7      55.0   0.656 +- 0.207
-  Jev zero-shot                    4/492        532          63.7      41.5   0.446 +- 0.125
-  Jev + exemplar                  27/381        651           inf       inf   0.604 +- 0.238
-  Opus zero-shot                   5/490        540          74.0      45.5   0.475 +- 0.121
-  Opus + exemplar                 16/241        401           inf       inf   0.637 +- 0.215
-  Decisions + 5 exemplars         24/109        349           inf       inf   0.757 +- 0.211
-  Jev + 5 exemplars               38/245        625           inf       inf   0.717 +- 0.185
-  CyberSecQwen-4B zero-shot        0/502        502          41.5      31.1   0.449 +- 0.158
-  cost at c=5/10/20: RiskFit 101/156/266; CE 110/185/335; LightGBM 194/349/659
-  cheapest point estimate at c=5: RiskFit
-  cheapest point estimate at c=10: RiskFit
+Results, GUIDE 'Confidence gating':
+  cheapest point estimate at c=5: Tiny Decision
+  cheapest point estimate at c=10: Tiny Decision
   cheapest point estimate at c=20: RiskFit
-  share of bootstrap replicates in which each is cheapest among all 9 at c=10: RiskFit 0.7680, CE 0.2320
-  P(a local model is cheapest), pool 'all 9 methods': c=10 1.0000, c=20 0.9965
-  P(a local model is cheapest), pool 'all 9 + both five-exemplar conditions': c=10 1.0000, c=20 0.9955
-  P(a local model is cheapest), pool 'all 9 + CyberSecQwen-4B': c=10 1.0000, c=20 0.9965
-  P(a local model is cheapest), pool 'all 12 methods': c=10 1.0000, c=20 0.9955
-  RiskFit / CE weakly dominate Opus + exemplar (fewer misses and FE) in 0.842 / 0.602 of replicates
-  95% bootstrap interval of gate misses: Decisions + exemplar 8 [3-15], RiskFit 11 [5-19]
-  Decisions + exemplar false escalations / RiskFit's: 9.1x
+  pool '15 methods (all but the 20-exemplar conditions and Qwen3-4B base)', c=10, share cheapest: Tiny Decision 0.6380, RiskFit 0.3020, CE 0.0595
+  pool 'all 18 methods': a local model cheapest at c=10 0.9760, c=20 0.8675
+  RiskFit / CE weakly dominate Opus + exemplar in 0.842 / 0.602 of replicates
+  Decisions + exemplar misses 8 [3-15], RiskFit 11 [5-19]; FE ratio 9.1x
   RiskFit vs Decisions + exemplar: c* 124.7, 95% interval 30 to inf
-  deployable gate, best local vs Decisions + exemplar: c* 184.5
-  deployable gate, misses / false escalations: RiskFit 12/47; CE 15/33; LightGBM 29/37; Decisions zero-shot 0/501; Decisions + exemplar 10/416; Jev zero-shot 4/505; Jev + exemplar 28/395; Decisions + 5 exemplars 27/109; Jev + 5 exemplars 42/247; CyberSecQwen-4B zero-shot 0/501
+  Decisions + 20 exemplars: 12/90, cost 210; RiskFit / Tiny Decision cheaper at every c in 0.585 / 0.523 of replicates; CE c* 18.3
+  CyberSecQwen-4B zero-shot: RiskFit c* 41.5; Qwen3-4B base zero-shot ROC-AUC 0.445
+  best-local crossover with one-exemplar conditions: Decisions + exemplar 124.7, Jev + exemplar inf, Opus + exemplar inf
 
-Figure 3 (left panel) and its caption: crossovers c* below which the local model is cheaper (test-quantile gate)
-  vs Decisions zero-shot          RiskFit 41.0, CE 30.8, LightGBM 14.8, best local 41.0
-  vs Decisions + exemplar         RiskFit 124.7, CE 55.0, LightGBM 16.6, best local 124.7
-  vs Jev zero-shot                RiskFit 63.7, CE 41.5, LightGBM 16.8, best local 63.7
-  vs Jev + exemplar               RiskFit inf, CE inf, LightGBM 85.5, best local inf
-  vs Opus zero-shot               RiskFit 74.0, CE 45.5, LightGBM 17.3, best local 74.0
-  vs Opus + exemplar              RiskFit inf, CE inf, LightGBM 13.5, best local inf
-  vs Decisions + 5 exemplars      RiskFit inf, CE inf, LightGBM 10.0, best local inf
-  vs Jev + 5 exemplars            RiskFit inf, CE inf, LightGBM inf, best local inf
-  vs CyberSecQwen-4B zero-shot    RiskFit 41.5, CE 31.1, LightGBM 14.9, best local 41.5
-  reweighted to the production class ratio (73:1419):
-    RiskFit    vs Decisions zero-shot    c* 455.3  [273, 916.724644027228]
-    CE         vs Decisions zero-shot    c* 409.9  [267, 746.1666263550218]
-    LightGBM   vs Decisions zero-shot    c* 212.0  [150, 319.8703860180364]
-    best local vs Decisions zero-shot    c* 455.3  [292, 932.934120300422]
-    RiskFit    vs Decisions + exemplar   c* 896.3  [329, inf]
-    CE         vs Decisions + exemplar   c* 695.4  [314, inf]
-    LightGBM   vs Decisions + exemplar   c* 242.5  [153, 469.51586446491814]
-    best local vs Decisions + exemplar   c* 896.3  [359, inf]
+Figure 1 (left) and Results, GUIDE 'Default and tuned operating points': default verdicts, caught / false escalations
+  RiskFit                      431/79  cost c=10 329
+  CE                           429/70  cost c=10 340
+  LightGBM                     395/65  cost c=10 675
+  MaxSim                       380/35  cost c=10 795
+  kNN                          415/53  cost c=10 463
+  Tiny Decision                423/50  cost c=10 380
+  Decisions zero-shot          452/620  cost c=10 660
+  Decisions + exemplar         432/500  cost c=10 740
+  Jev zero-shot                430/581  cost c=10 841
+  Jev + exemplar               407/448  cost c=10 938
+  Opus zero-shot               424/580  cost c=10 900
+  Opus + exemplar              416/261  cost c=10 661
+  Decisions + 5 exemplars      416/159  cost c=10 559
+  Jev + 5 exemplars            399/292  cost c=10 862
+  Decisions + 20 exemplars     434/126  cost c=10 346
+  Jev + 20 exemplars           410/265  cost c=10 725
+  CyberSecQwen-4B zero-shot    454/623  cost c=10 643
+  Qwen3-4B base zero-shot      353/499  cost c=10 1529
+  hosted models: caught 399-452, false escalations 126-620
+  CyberSecQwen-4B labeled 1077 of 1079 test prompts malicious
+  cost at c=10 with a validation-tuned threshold at RiskFit's FPR: Decisions + 5 exemplars 1381, Jev + 5 exemplars 1173, Decisions + 20 exemplars 541, Jev + 20 exemplars 875, Tiny Decision 325, RiskFit 380, CE 451
+  lowest local ROC-AUC 0.846; hosted ROC-AUC: Decisions zero-shot 0.490, Decisions + exemplar 0.656, Jev zero-shot 0.446, Jev + exemplar 0.604, Opus zero-shot 0.475, Opus + exemplar 0.637, Decisions + 5 exemplars 0.757, Jev + 5 exemplars 0.717, Decisions + 20 exemplars 0.862, Jev + 20 exemplars 0.809, CyberSecQwen-4B zero-shot 0.449, Qwen3-4B base zero-shot 0.445
 
-RQ2 'Exemplars':
+Results, GUIDE 'Exemplars':
   exemplar label correct for 0.861 of test prompts
-  verdict equals the (most similar) exemplar's label, 3-class: decisions zs 0.447, decisions ex 0.550, jev zs 0.426, jev ex 0.514, opus zs 0.452, opus ex 0.791, decisions 5ex (vs most similar exemplar) 0.849, jev 5ex (vs most similar exemplar) 0.677
-  Decisions + 5 exemplars: gate false escalations 420 -> 109 (74% fewer)
-  Jev + 5 exemplars: gate false escalations 381 -> 245 (36% fewer)
-  neighbor vote, top-1 neighbor label: caught 410 with 75 false escalations, cost c=10 535
-  neighbor vote, majority of 5 neighbors (>= 3 malicious): caught 386 with 68 false escalations, cost c=10 768
-  for comparison, default verdicts at c=10: RiskFit 329, CE 340
+  verdict equals the (most similar) exemplar's label, 3-class: decisions zs 0.447, decisions ex 0.550, jev zs 0.426, jev ex 0.514, opus zs 0.452, opus ex 0.791, decisions 5ex (vs most similar exemplar) 0.849, jev 5ex (vs most similar exemplar) 0.677, decisions 20ex (vs most similar exemplar) 0.888, jev 20ex (vs most similar exemplar) 0.708
+  Decisions + 20 exemplars: gate false escalations 420 -> 90 (79% fewer than one exemplar)
+  Jev + 20 exemplars: gate false escalations 381 -> 213 (44% fewer than one exemplar)
+  neighbor vote (top-1 neighbor label): caught 410 with 75 false escalations, cost c=10 535
+  default verdicts at c=10: RiskFit 329, CE 340
+
+Figure 2 (left) and caption: crossovers c* in Table 2; dotted line = best local vs Decisions + exemplar: 124.7
+  reweighted to the production class ratio: RiskFit vs Decisions + exemplar c* 896.3
+  reweighted to the production class ratio: CE vs Decisions + exemplar c* 695.4
 
 Limitations ('Where hosted models are competitive'):
-  Spearman correlation of the two decision models' predicate scores, with exemplar: 0.917
-  Opus gate ties at the cutoff: Opus zero-shot: misses 5 (tie order by prompt id), range 0-8, expected 4.5, Opus + exemplar: misses 16 (tie order by prompt id), range 10-21, expected 16.5
+  Opus + exemplar gate misses 16 (tie order by prompt id), expected 16.5 under random tie order
+  Decisions + 20 exemplars gate cost 210 vs RiskFit 156
 
 Paired per-organization tests (Wilcoxon, Holm-adjusted within each family):
-  local models                           RiskFit - CE                               mal_recall             mean diff +0.014 (4/1/7)  p_holm 0.375
-  local models                           RiskFit - CE                               matched_val_fpr_recall mean diff +0.063 (6/0/6)  p_holm 0.125
-  local models                           RiskFit - LightGBM                         mal_recall             mean diff +0.153 (10/1/1)  p_holm 0.024
-  local models                           RiskFit - LightGBM                         matched_val_fpr_recall mean diff +0.226 (10/1/1)  p_holm 0.012
-  Decisions + exemplar vs local          Decisions + exemplar - RiskFit             matched_fpr_recall     mean diff -0.305 (0/10/2)  p_holm 0.008
-  Decisions + exemplar vs local          Decisions + exemplar - RiskFit             gate_fe_rate           mean diff +0.505 (12/0/0)  p_holm 0.003
-  Decisions + exemplar vs local          Decisions + exemplar - CE                  matched_fpr_recall     mean diff -0.299 (0/10/2)  p_holm 0.008
-  Decisions + exemplar vs local          Decisions + exemplar - CE                  gate_fe_rate           mean diff +0.529 (12/0/0)  p_holm 0.003
-  Jev + exemplar vs local                Jev + exemplar - RiskFit                   matched_fpr_recall     mean diff -0.341 (0/10/2)  p_holm 0.008
-  Jev + exemplar vs local                Jev + exemplar - RiskFit                   gate_fe_rate           mean diff +0.458 (12/0/0)  p_holm 0.003
-  Jev + exemplar vs local                Jev + exemplar - CE                        matched_fpr_recall     mean diff -0.335 (0/10/2)  p_holm 0.008
-  Jev + exemplar vs local                Jev + exemplar - CE                        gate_fe_rate           mean diff +0.481 (12/0/0)  p_holm 0.003
-  Jev vs Decisions (same condition)      Jev + exemplar - Decisions + exemplar      matched_fpr_recall     mean diff -0.036 (2/5/5)  p_holm 0.781
-  Jev vs Decisions (same condition)      Jev + exemplar - Decisions + exemplar      gate_fe_rate           mean diff -0.048 (3/6/3)  p_holm 1.000
-  Jev vs Decisions (same condition)      Jev zero-shot - Decisions zero-shot        matched_fpr_recall     mean diff +0.036 (6/3/3)  p_holm 1.000
-  Jev vs Decisions (same condition)      Jev zero-shot - Decisions zero-shot        gate_fe_rate           mean diff +0.032 (7/3/2)  p_holm 1.000
-  Opus + exemplar vs local               Opus + exemplar - RiskFit                  gate_fe_rate           mean diff +0.269 (11/1/0)  p_holm 0.004
-  Opus + exemplar vs local               Opus + exemplar - CE                       gate_fe_rate           mean diff +0.293 (12/0/0)  p_holm 0.002
-  Opus zero-shot vs local                Opus zero-shot - RiskFit                   gate_fe_rate           mean diff +0.636 (12/0/0)  p_holm 0.002
-  Opus zero-shot vs local                Opus zero-shot - CE                        gate_fe_rate           mean diff +0.659 (12/0/0)  p_holm 0.002
-  Opus vs Jev (same condition)           Opus + exemplar - Jev + exemplar           gate_fe_rate           mean diff -0.189 (0/11/1)  p_holm 0.004
-  Opus vs Jev (same condition)           Opus zero-shot - Jev zero-shot             gate_fe_rate           mean diff -0.003 (3/5/4)  p_holm 1.000
-  Opus vs Decisions (same condition)     Opus + exemplar - Decisions + exemplar     gate_fe_rate           mean diff -0.236 (0/9/3)  p_holm 0.016
-  Opus vs Decisions (same condition)     Opus zero-shot - Decisions zero-shot       gate_fe_rate           mean diff +0.028 (5/5/2)  p_holm 1.000
-  Decisions + 5 exemplars vs local       Decisions + 5 exemplars - RiskFit          matched_fpr_recall     mean diff -0.219 (1/8/3)  p_holm 0.078
-  Decisions + 5 exemplars vs local       Decisions + 5 exemplars - RiskFit          gate_fe_rate           mean diff +0.104 (8/2/2)  p_holm 0.078
-  Decisions + 5 exemplars vs local       Decisions + 5 exemplars - CE               matched_fpr_recall     mean diff -0.212 (0/7/5)  p_holm 0.078
-  Decisions + 5 exemplars vs local       Decisions + 5 exemplars - CE               gate_fe_rate           mean diff +0.127 (10/0/2)  p_holm 0.012
-  Jev + 5 exemplars vs local             Jev + 5 exemplars - RiskFit                matched_fpr_recall     mean diff -0.248 (1/10/1)  p_holm 0.021
-  Jev + 5 exemplars vs local             Jev + 5 exemplars - RiskFit                gate_fe_rate           mean diff +0.221 (10/0/2)  p_holm 0.010
-  Jev + 5 exemplars vs local             Jev + 5 exemplars - CE                     matched_fpr_recall     mean diff -0.241 (1/11/0)  p_holm 0.014
-  Jev + 5 exemplars vs local             Jev + 5 exemplars - CE                     gate_fe_rate           mean diff +0.245 (12/0/0)  p_holm 0.003
-  5 exemplars vs 1 exemplar (same model) Decisions + 5 exemplars - Decisions + exemplar matched_fpr_recall     mean diff +0.087 (6/3/3)  p_holm 0.301
-  5 exemplars vs 1 exemplar (same model) Decisions + 5 exemplars - Decisions + exemplar gate_fe_rate           mean diff -0.402 (0/11/1)  p_holm 0.005
-  5 exemplars vs 1 exemplar (same model) Jev + 5 exemplars - Jev + exemplar         matched_fpr_recall     mean diff +0.094 (7/2/3)  p_holm 0.293
-  5 exemplars vs 1 exemplar (same model) Jev + 5 exemplars - Jev + exemplar         gate_fe_rate           mean diff -0.236 (0/12/0)  p_holm 0.003
-  CyberSecQwen-4B vs local               CyberSecQwen-4B zero-shot - RiskFit        matched_fpr_recall     mean diff -0.451 (0/12/0)  p_holm 0.003
-  CyberSecQwen-4B vs local               CyberSecQwen-4B zero-shot - RiskFit        gate_fe_rate           mean diff +0.652 (12/0/0)  p_holm 0.003
-  CyberSecQwen-4B vs local               CyberSecQwen-4B zero-shot - CE             matched_fpr_recall     mean diff -0.444 (0/12/0)  p_holm 0.003
-  CyberSecQwen-4B vs local               CyberSecQwen-4B zero-shot - CE             gate_fe_rate           mean diff +0.676 (12/0/0)  p_holm 0.003
+  local models                   RiskFit - CE                     mal_recall             mean diff +0.014 (4/1/7)  p_holm 0.375
+  local models                   RiskFit - CE                     matched_val_fpr_recall mean diff +0.063 (6/0/6)  p_holm 0.125
+  local models                   RiskFit - CE                     kappa                  mean diff -0.005 (3/6/3)  p_holm 0.652
+  local models                   RiskFit - LightGBM               mal_recall             mean diff +0.153 (10/1/1)  p_holm 0.024
+  local models                   RiskFit - LightGBM               matched_val_fpr_recall mean diff +0.226 (10/1/1)  p_holm 0.012
+  local models                   RiskFit - LightGBM               kappa                  mean diff +0.095 (9/3/0)  p_holm 0.277
+  Decisions + exemplar vs local  Decisions + exemplar - RiskFit   matched_fpr_recall     mean diff -0.305 (0/10/2)  p_holm 0.008
+  Decisions + exemplar vs local  Decisions + exemplar - RiskFit   gate_miss_rate         mean diff -0.069 (3/6/3)  p_holm 0.426
+  Decisions + exemplar vs local  Decisions + exemplar - RiskFit   gate_fe_rate           mean diff +0.505 (12/0/0)  p_holm 0.003
+  Decisions + exemplar vs local  Decisions + exemplar - CE        matched_fpr_recall     mean diff -0.299 (0/10/2)  p_holm 0.008
+  Decisions + exemplar vs local  Decisions + exemplar - CE        gate_miss_rate         mean diff -0.063 (2/7/3)  p_holm 0.195
+  Decisions + exemplar vs local  Decisions + exemplar - CE        gate_fe_rate           mean diff +0.529 (12/0/0)  p_holm 0.003
+  Jev + exemplar vs local        Jev + exemplar - RiskFit         matched_fpr_recall     mean diff -0.341 (0/10/2)  p_holm 0.008
+  Jev + exemplar vs local        Jev + exemplar - RiskFit         gate_miss_rate         mean diff +0.077 (4/1/7)  p_holm 0.297
+  Jev + exemplar vs local        Jev + exemplar - RiskFit         gate_fe_rate           mean diff +0.458 (12/0/0)  p_holm 0.003
+  Jev + exemplar vs local        Jev + exemplar - CE              matched_fpr_recall     mean diff -0.335 (0/10/2)  p_holm 0.008
+  Jev + exemplar vs local        Jev + exemplar - CE              gate_miss_rate         mean diff +0.083 (5/3/4)  p_holm 0.297
+  Jev + exemplar vs local        Jev + exemplar - CE              gate_fe_rate           mean diff +0.481 (12/0/0)  p_holm 0.003
+  local baselines vs RiskFit     MaxSim - RiskFit                 matched_fpr_recall     mean diff -0.014 (0/3/9)  p_holm 1.000
+  local baselines vs RiskFit     MaxSim - RiskFit                 gate_miss_rate         mean diff +0.045 (8/1/3)  p_holm 0.684
+  local baselines vs RiskFit     MaxSim - RiskFit                 gate_fe_rate           mean diff -0.060 (0/7/5)  p_holm 0.141
+  local baselines vs RiskFit     kNN - RiskFit                    matched_fpr_recall     mean diff -0.039 (0/4/8)  p_holm 0.750
+  local baselines vs RiskFit     kNN - RiskFit                    gate_miss_rate         mean diff +0.034 (5/0/7)  p_holm 0.500
+  local baselines vs RiskFit     kNN - RiskFit                    gate_fe_rate           mean diff +0.021 (2/7/3)  p_holm 1.000
+  local baselines vs RiskFit     Tiny Decision - RiskFit          matched_fpr_recall     mean diff +0.017 (6/2/4)  p_holm 0.977
+  local baselines vs RiskFit     Tiny Decision - RiskFit          gate_miss_rate         mean diff -0.016 (2/2/8)  p_holm 1.000
+  local baselines vs RiskFit     Tiny Decision - RiskFit          gate_fe_rate           mean diff -0.017 (3/6/3)  p_holm 1.000

@@ -148,6 +148,7 @@ class FastFitLoRAConfig:
     tversky_gamma: float = 1.0
     recall_constraint_rho: float = 0.0
     recall_constraint_lambda: float = 0.0
+    recall_hinge_window: str = "micro"  # 'accum': soft recall over the accumulation window
     false_positive_penalty_beta: float = 0.0
     constrained_reward_metric: str = "none"
     constrained_reward_weight: float = 0.0
@@ -196,7 +197,7 @@ class FastFitLoRAConfig:
         "per_device_train_batch_size", "per_device_eval_batch_size", "max_text_length", "num_repeats",
         "clf_loss_factor", "sim_loss_factor", "inference_type", "clf_level", "tversky_loss_weight",
         "tversky_alpha", "tversky_beta", "tversky_gamma", "recall_constraint_rho", "recall_constraint_lambda",
-        "false_positive_penalty_beta", "pooled_cosine_scale", "pooled_cosine_learn_scale",
+        "recall_hinge_window", "false_positive_penalty_beta", "pooled_cosine_scale", "pooled_cosine_learn_scale",
         "malicious_inference_delta", "length_norm_at_inference", "learning_rate", "warmup_ratio", "fp16",
         "optimizer", "gradient_accumulation_steps", "max_grad_norm", "early_stopping_patience",
         "metric_for_best_model", "greater_is_better", "class_weight_mode", "focal_loss_gamma",
@@ -285,6 +286,7 @@ class FastFitLoRAClassifier:
             "tversky_loss_weight": c.tversky_loss_weight, "tversky_alpha": c.tversky_alpha,
             "tversky_beta": c.tversky_beta, "tversky_gamma": c.tversky_gamma,
             "recall_constraint_rho": c.recall_constraint_rho, "recall_constraint_lambda": c.recall_constraint_lambda,
+            "recall_hinge_window": c.recall_hinge_window,
             "false_positive_penalty_beta": c.false_positive_penalty_beta,
             "constrained_reward_metric": c.constrained_reward_metric,
             "constrained_reward_weight": c.constrained_reward_weight,

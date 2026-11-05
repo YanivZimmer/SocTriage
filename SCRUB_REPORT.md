@@ -26,7 +26,7 @@ appears in the public split membership. Labels and verdicts are drawn from {fals
 malicious}. All other columns are numeric, empty, or a status from {matched, no_match}. One internal
 provenance column (cache source) and one internal call index were dropped.
 
-## Scans of the final tree (47 files)
+## Scans of the tree (initial snapshot, 47 files; see the final-paper sync below for the current tree)
 
 Secret scanners `gitleaks` and `trufflehog` are not installed on the build machine, so a regex scan was used.
 
@@ -99,61 +99,119 @@ internal repository name.
 * The license is Apache-2.0, with the standard text.
 
 
-## Sync with the paper draft (fix20), 2026-11-05
+## Sync with the final paper, 2026-11-05
 
-Checked every statement the draft makes about the release, and every GUIDE number in it, against this tree.
+The previous sync targeted draft fix20. This sync targets the final paper (`paper/RiskFit_AICS2027.pdf`) and applies
+the scope rule "only results that appear in the final version are in the repository": every result file was
+audited against the final text, captions and tables, kept only if it backs a number, table, figure or claim there,
+and mapped in the README ("Paper-to-repository map").
 
-**Statements about the release (Ethical Statement, Methods, Limitations).**
+**Statements the final paper makes about the release.**
 
-| Draft statement | Status in this tree |
+| Final-paper statement | Status in this tree |
 |---|---|
-| "We release aggregate metrics" | `aggregates/production/` (26 CSVs, tenant A/B/C or pooled only) and `aggregates/guide/` |
-| "code that reproduces the GUIDE comparisons" | `scripts/analyze_guide.py` now covers all 12 GUIDE methods, including Decisions and Jev with five exemplars and CyberSecQwen-4B, and prints every GUIDE number of the draft (`paper_numbers.txt`) |
-| "the hosted models' per-prompt GUIDE outputs" | `data/guide_outputs/`: Decisions 0/1/5 exemplars, Jev 0/1/5, Opus 0/1, CyberSecQwen-4B |
-| CyberSecQwen-4B "scoring details are in the code release" | `scripts/run_cybersecqwen.py` (new) and `riskfit.prompts.open_llm_user_prompt` (new) |
-| Tenant C's later alerts: "we release the aggregate results" | `aggregates/production/later_alerts_local_models.csv` (tenant C rows: counts, rates with Wilson intervals, kappa, gates, coverage curve) |
+| Code link (github.com/YanivZimmer/SocTriage) | this repository (to be pushed there) |
+| "We release aggregate metrics" | `aggregates/production/` (30 tenant-level or pooled CSVs, 3 tenant x fold x seed count tables) and `aggregates/guide/` |
+| "code that reproduces the GUIDE comparisons" | `scripts/analyze_guide.py` covers all 18 conditions of Table 2 and prints every GUIDE number of the final paper (`paper_numbers.txt`) |
+| "with the hosted models' per-prompt GUIDE outputs" | `data/guide_outputs/`: Decisions and Jev with 0/1/5/20 exemplars, Opus 0/1, CyberSecQwen-4B and Qwen3-4B base |
+| CyberSecQwen-4B "scoring details are in the code release" | `scripts/run_cybersecqwen.py` (now also documents the base-model control) |
+| Tenant C's later export: "we release the aggregate results" | `aggregates/production/later_alerts_local_models.csv` (tenant C only) |
 | "no alert text, customer identifiers, per-record predictions or trained adapters" | holds: the only per-record files are public GUIDE prompts (`data/guide_outputs/`, `data/guide_predictions/`) |
+| "every public-data comparison is reproducible from GUIDE" | holds (see GUIDE reproduction) |
 
-**GUIDE reproduction.** On a fresh split rebuild from the checksummed archive (ALL CHECKS PASSED), the analysis on
-the released predictions and outputs reproduces every GUIDE number in the draft: Table 1 (GUIDE column), Table 3
-(all seven rows and the bold cells), Table 4 (misses, false escalations, c* against RiskFit and CE, ROC-AUC mean
-and standard deviation), Figure 2 (left), Figure 3 (left) and its caption, and the GUIDE numbers in RQ1, RQ2,
-"Exemplars" and Limitations. Adding the five-exemplar and CyberSecQwen conditions leaves every row of the nine
-original methods byte-identical (checked file by file), apart from three `dominated_by` labels in the frontier
-table that now also name the new conditions. The new rows equal the internal follow-up analyses exactly
-(gate counts, bootstrap intervals, crossovers, Holm-adjusted tests). The CyberSecQwen prompt built by the new code is
-byte-identical to the scored prompt for all 2,158 prompts, and its token counts equal the released ones.
+**GUIDE reproduction.** `analyze_guide.py` now loads the six local models (adds MaxSim, kNN and Tiny Decision =
+Qwen3-0.6B-LoRA at 10 epochs), the 20-exemplar conditions and the Qwen3-4B base control, and writes only the
+statistics the final paper reports (the deployable gate on GUIDE, test-oracle thresholds, the 1/2/5% FPR targets,
+the choice-score sensitivity, the decision-model agreement table and the unreported candidate pools and paired-test
+families were dropped). On the fingerprint-checked splits, every number in Table 1 (GUIDE column), Table 2 (all 18
+rows: misses, false escalations, c* against RiskFit and CE, ROC-AUC mean and std, the kNN tie range), Figure 1 (left),
+Figure 2 (left and caption) and the GUIDE paragraphs and Limitations is reproduced; the new rows equal the internal
+analysis exactly (pooled gate counts and bootstrap intervals of all 18 conditions, all 72 local-vs-hosted crossover
+rows and both candidate pools compared field by field). The 20-exemplar messages built by
+`scripts/build_hosted_inputs.py --k 20` are byte-identical (sha256) to the requests for all 2,158 prompts, and the
+exemplar ids match. The released local predictions were checked against the run manifests' sha256 before the
+train split and internal fields (`detected_at`, `sample_type`, `theme`, `class_logits`) were dropped.
 
-**Production aggregates.** Built from the internal per-run aggregate tables (never from per-alert files), by a
-build script that is not released because it reads internal paths. Checks on the result:
+**Production aggregates.** Built from the internal per-run aggregate tables (never from per-alert files). New:
+the seven-seed RiskFit vs CE-A100 comparison, the recall-target sweep, the hinge-by-sampling experiment (Table 3)
+and the beta note (balanced-sampling beta=0.25 per-seed change only). Tenant x fold x seed count tables are in
+`units/` (columns: tenant A/B/C, fold 0-2, seed, counts, rates; no alert, prompt, run, job or adapter identifiers);
+the hyperparameter-check tables were not released because they carry internal paths, job names and adapter hashes.
+Method names: the paper's "Tiny Decision" replaces the former `Qwen3-LoRA` label in every production CSV.
+One labelling bug was fixed: in `later_alerts_local_models.csv` the LightGBM rows had an empty method name.
 
-* Granularity: every row is tenant A, B, C or pooled; no fold-level metric columns, run or job ids, image
-  digests, pipeline names, alert or prompt ids, or free-text notes. Fold-level rows of the sources were averaged
-  or summed; internal notes columns were dropped. `tests/test_release.py` enforces the column rules.
-* Values: the build asserts, and the test re-checks, the draft's Table 2, Table 5 (all 14 rows and the Pareto
-  set), Table 6, Table 7 and the Figure 2 (right) bars; the remaining production numbers of the text were
-  compared by hand (see the README map).
-* Names: tenants appear only as A, B, C; methods only under the paper's names.
+**Code.** The accumulation-window recall hinge (`recall_hinge_window: accum`, exact window gradient through a
+per-micro-batch gradient buffer) and the per-epoch hinge-activity statistics used by the hinge-by-sampling runs were
+ported into `riskfit/models/fastfit/modeling.py` and `train.py` (`HingeWindowMixin`, `HingeLogCallback`), with the
+recipe key in `riskfit/models/fastfit_lora.py`. The default (`micro`) path is the paper's recipe and changes only
+by detached statistics. `tests/test_release.py` checks on synthetic tensors that the window hinge's gradient
+equals the one-graph window hinge. The beta penalty was already in the code. New recipes:
+`riskfit_lambda0`, `riskfit_rho07`, `riskfit_rho095`, `hinge_by_sampling/*` (production; key-for-key equal to the
+experiment configs apart from seed and description) and `maxsim_guide`, `knn_guide`, `tiny_decision_guide` (GUIDE).
+`.gitignore` ignored every directory named `models/`, which would have left new files under `configs/models/` and
+`riskfit/models/` untracked; it now ignores only the top-level `/models/` (and `/figures/`, `/results/`, `/out/`,
+`/cache/`). `scripts/make_figures.py` now draws the final figures (9 pt text, final layout and labels).
 
-**Not reproducible here / not included.**
+**Keep / remove audit (result files).**
+
+| File(s) | Decision | Final-paper place / reason |
+|---|---|---|
+| `data/guide_outputs/` (7 files, 2 new: 20 exemplars, Qwen3-4B base) | keep | Table 2, Figure 1 (left), GUIDE text |
+| `data/guide_predictions/` (6 methods, 3 new: maxsim, knn, tiny_decision) | keep | Tables 1-2, Figure 1 (left), GUIDE text |
+| `aggregates/guide/`: full_coverage, matched_fpr, auc, gate80, gate80_ties, frontier_cost, bootstrap_gate80, bootstrap_cost_crossovers, bootstrap_min_cost_probability, paired_tests, exemplar_following_test, neighbor_vote, crossovers_reweighted, summary.json, paper_numbers.txt | keep (regenerated, trimmed to reported statistics) | Tables 1-2, Figures 1-2, GUIDE paragraphs, Limitations |
+| `aggregates/guide/hosted_agreement.csv` | remove | the decision-model score correlation is no longer in the paper |
+| `aggregates/production/`: data_summary, default_verdicts, ranking_auc, gate80_test_quantile, one_to_one_vs_decisions_exemplar, deployable_gate, evasion, weak_supervision, weak_vs_revealed_kappa_matched_folds, weak_vs_revealed_cost_matched_folds_k25, later_alerts_tenantA_full_coverage, later_alerts_tenantA_gates, near_duplicates, non_duplicate_subset, field_lookup_predictiveness, decisions_repeatability, facts | keep | see the README map |
+| `thresholds.csv` | keep, trimmed | only RiskFit's-FPR and 5%-FPR rows are reported (the production threshold table was removed) |
+| `gate80_crossovers_bootstrap.csv` | keep, trimmed | only MaxSim and RiskFit rho=0.8 vs Decisions + ex. are reported |
+| `gate80_min_cost_probability.csv` | keep, trimmed | only the 14-configuration pool at c=10 is reported; added the "any local" row (99.98%) |
+| `later_alerts_local_models.csv` | keep, trimmed | tenant C only (Limitations); tenant A rows duplicated the tenant-A files |
+| `seed_deployable_cost.csv` | keep, rebuilt | RiskFit and CE-A100 over seven seeds (the three-seed values 103 +- 23 / 106 +- 30 are superseded), MaxSim over three |
+| `facts.csv` | keep | locations renamed to the final section names |
+| `seed_variance.csv` | remove | three-seed hinge gain (2.3 +- 3.5) replaced by the seven-seed comparison |
+| `hinge_validation_selection.csv` | remove | the hinge-selection Limitations paragraph is not in the final paper |
+| `exemplar_retrieval.csv` | remove | the 66% / 38% shares are in `facts.csv`; tenants B and C are not reported |
+| `later_alerts_tenantA_coverage_curve.csv` | remove | only the 80% point is reported, which is in `later_alerts_tenantA_gates.csv` |
+| new: `seeds_riskfit_vs_ce_7seeds*.csv`, `units/seeds_riskfit_vs_ce_7seeds_units.csv` | add | Production, Default and tuned; Seeds, deployable gate |
+| new: `recall_target_sweep_tests.csv`, `recall_target_sweep_monotonicity.csv`, `units/recall_target_sweep_units.csv` | add | Production, When the recall hinge helps (production only; the exploratory GUIDE rows are not reported) |
+| new: `hinge_by_sampling_arms.csv`, `_contrasts.csv`, `_activity.csv`, `units/hinge_by_sampling_units.csv` | add | Table 3 and its paragraph; abstract and contribution (12 -> 46 +- 1); the exploratory one-seed contrast was dropped |
+| new: `beta025_seed_change.csv` | add | Methods, beta note (16 +- 13) |
+| not added: the beta=0.25 results beyond the per-seed change (full coverage, gates, GUIDE, evasion, forward), the natural-sampling beta experiment, the validation-tuned natural-CE analysis, the hyperparameter checks, the exploratory GUIDE recall-target rows | excluded | not in the final paper (configs and code of the two excluded experiments are not included either; only the shared beta / window-hinge code that the paper's experiments use) |
+
+**Configs.** Every recipe in `configs/` is used by a reported result: production `riskfit`, `riskfit_rho07/08/095`,
+`riskfit_lambda4`, `riskfit_lambda0`, `riskfit_beta025`, `ce`, `focal_tversky`, `maxsim`, `knn`, `setfit_lora`,
+`qwen3_lora`, `hinge_by_sampling/*`; GUIDE `riskfit_guide`, `ce_guide`, `lightgbm`, `maxsim_guide`, `knn_guide`,
+`tiny_decision_guide`.
+
+**Not reproducible here / not backed by a file.**
 
 * Production numbers cannot be recomputed (no data); they are released as aggregates.
-* Recall targeting (rho sweep, extra seeds) and extra GUIDE baselines: still running, not included; marked as
-  pending placeholders in the README.
-* Rounding: the draft prints 106 +- 30 for CE-A100's deployable-gate cost over seeds; the released seeds give
-  106.3 +- 29.4.
-* The draft attributes the best-local production crossover (about 21) to MaxSim (21.4); RiskFit rho=0.8's point
-  crossover is 21.5, so the point envelope is attained by RiskFit rho=0.8. Both round to 21.
+* Compute and spend statements of the paper (about 13 minutes per encoder run, up to 1.7 A100-hours per Tiny
+  Decision fold, production API calls under USD 1.50) and "on two tenant-folds, RiskFit's code with lambda=0 and
+  the CE code gave identical predictions" are not backed by a released file.
+* "Without changing any conclusion" (beta note) rests on the internal beta=0.25 reruns, of which only the per-seed
+  false-escalation change is released, per the scope rule.
+* 99.98%: the per-method shares are rounded to four decimals; the "any local" row is the unrounded share rounded
+  to four decimals.
+* Rounding: the paper prints "+9 false escalations (CI +4 to +15)"; the file gives +9.0 [+4.0, +14.6].
+* The production best-local crossover "about 21" is attained by RiskFit rho=0.8 (21.5) at the point estimate;
+  MaxSim gives 21.4. The figure labels 125 and 21 are the paper's rounded values (checked by `make_figures.py`).
 
-**Scans of the final tree.** Same pattern families as above, re-run over every file including the new
-aggregates, plus plain-substring checks for: the names and internal ids of the three production tenants (taken
-from an internal file and never written down), the company cloud-project name, the storage URL scheme, the
-container-registry host, the cloud-project path prefix, the cloud project number, user-home and temporary-directory
-prefixes, the local username, the internal code-base name and data-warehouse name, API-key prefixes (OpenAI,
-Google, GitHub, AWS, Slack), email addresses and IPv4 addresses. All 0, except the author contact in the
-README (one address, deliberate) and the GUIDE checksum fields (`sha256:` in configs, public). No file whose
-name marks it as private or not for sharing was opened or copied, and no `.env`, key or credential file was read.
+**Scans of the final tree (186 files) and of the git history.** Plain-substring checks (case-insensitive) for:
+the names of the three production tenants and their spelling variants (taken from an internal file and never
+written down), the company cloud-project name and number, the storage URL scheme, the cloud region, the
+container-registry host, the cloud-project path prefix, the internal bucket, image and code-base names,
+user-home and temporary-directory prefixes, the local username, the scratch-directory names of the experiments,
+internal experiment labels; regex checks for API-key prefixes (OpenAI, Google, GitHub, AWS, Slack), IPv4 addresses
+and email addresses; the same checks on the paper PDF's text and on every commit's diff. All 0, except by design:
+the author contact in the README (and the same address as the allowlist entry in `tests/test_release.py`); the
+paper's own affiliation line ("firstname.lastname" at the company domain) and code link (the author's GitHub
+account) in the PDF; the column names `ex17_*`, `ex18_*` of the 20-exemplar file (exemplar ranks); the word
+"private" in "private data not released" and in the LightGBM feature for private IPv4 ranges. No file whose name
+marks it as private or not for sharing was opened or copied, and no `.env`, key or credential file was read.
 
-**Tests.** `tests/test_release.py --splits ...`: all checks pass (production granularity and table spot checks,
-GUIDE snapshot numbers, figure regeneration, and a full re-run of `analyze_guide.py` matching the snapshot).
-`tests/smoke_test.py` trains a small model and was not run for this sync (no training was allowed).
+**Tests.** `tests/test_release.py --splits ...`: all checks pass (production column rules and final-paper spot checks,
+tenant x fold x seed table rules, GUIDE snapshot numbers, regeneration of both figures, the window-hinge gradient
+check, the README map covering every result file, a leak-pattern scan, and a full re-run of `analyze_guide.py`
+matching the snapshot). A full 2,000-replicate re-run reproduces `aggregates/guide/` byte for byte.
+`tests/smoke_test.py` trains a small model and was not run (no training was allowed); its analysis step was run on
+one organization with the released predictions.

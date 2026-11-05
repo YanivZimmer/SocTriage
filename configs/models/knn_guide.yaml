@@ -1,0 +1,12 @@
+# kNN on GUIDE (Table 2, Figure 1): the production recipe unchanged. The paper's GUIDE run used CPU
+# (embeddings on the A100 build returned NaN); no training, so no seed.
+# k=5 nearest neighbours over frozen SecureBERT 2.0 embeddings (cosine).
+model_type: knn
+preprocessor_kwargs:
+  model_name: "cisco-ai/SecureBERT2.0-biencoder"
+  max_tokens: 1024
+  apply_weighting: false
+
+embedding_model: "cisco-ai/SecureBERT2.0-biencoder"
+k_neighbors: 5
+metric: cosine

@@ -375,6 +375,11 @@ class ConfigArguments:
         default=0.0,
         metadata={"help": "Lagrangian penalty weight for falling below recall_constraint_rho."},
     )
+    recall_hinge_window: str | None = field(
+        default="micro",
+        metadata={"help": "'micro' = soft recall per micro-batch (the paper's recipe); 'accum' = soft recall over the "
+                          "gradient-accumulation window (natural-sampling arms of the hinge-by-sampling experiment)."},
+    )
     false_positive_penalty_beta: float | None = field(
         default=0.0,
         metadata={"help": "Penalty weight on mean p(rare class) over non-rare examples."},
@@ -468,6 +473,7 @@ class FastFitConfig(PretrainedConfig):
         tversky_gamma=1.0,
         recall_constraint_rho=0.0,
         recall_constraint_lambda=0.0,
+        recall_hinge_window="micro",
         false_positive_penalty_beta=0.0,
         constrained_reward_metric="none",
         constrained_reward_weight=0.0,
@@ -526,6 +532,8 @@ class FastFitConfig(PretrainedConfig):
         self.tversky_gamma = float(tversky_gamma or 1.0)
         self.recall_constraint_rho = float(recall_constraint_rho or 0.0)
         self.recall_constraint_lambda = float(recall_constraint_lambda or 0.0)
+        self.recall_hinge_window = str(recall_hinge_window or "micro")
+        assert self.recall_hinge_window in ("micro", "accum"), self.recall_hinge_window
         self.false_positive_penalty_beta = float(false_positive_penalty_beta or 0.0)
         self.constrained_reward_metric = constrained_reward_metric or "none"
         self.constrained_reward_weight = float(constrained_reward_weight or 0.0)
@@ -1070,6 +1078,8 @@ class FastFitTrainable(PreTrainedModel):
                 and reward_weight <= 0.0
             )
         ):
+            if self.training and labels is not None and label_id is not None and self.config.recall_constraint_rho > 0.0:
+                self._would_be_hinge(logits, labels, int(label_id))
             return logits.new_zeros(())
 
         probabilities = torch.softmax(logits, dim=1)
@@ -1077,9 +1087,25 @@ class FastFitTrainable(PreTrainedModel):
         loss = logits.new_zeros(())
 
         if (
+            self.training
+            and self.config.recall_hinge_window == "accum"
+            and not self.config.adaptive_dual_enabled
+            and float(recall_weight.detach().item()) > 0.0
+            and self.config.recall_constraint_rho > 0.0
+        ):
+            rare_mask = labels == int(label_id)
+            loss = loss + self._window_hinge(rare_probabilities, rare_mask, recall_weight)
+        elif (
             self.config.adaptive_dual_enabled or float(recall_weight.detach().item()) > 0.0
         ) and self.config.recall_constraint_rho > 0.0:
             rare_mask = labels == int(label_id)
+            if self.training:  # detached activity statistics
+                has_mal = bool(rare_mask.any())
+                sr = float(rare_probabilities[rare_mask].mean().detach().item()) if has_mal else 0.0
+                hv = float(recall_weight.detach().item()) * max(0.0, float(self.config.recall_constraint_rho) - sr)
+                hv = hv if has_mal else 0.0
+                self._hinge_unit(has_mal, sr, hv)
+                self._hinge_micro_window_track(has_mal, hv > 0.0)
             if rare_mask.any():
                 soft_recall = rare_probabilities[rare_mask].mean()
                 raw_recall_gap = logits.new_tensor(float(self.config.recall_constraint_rho)) - soft_recall
@@ -1109,6 +1135,150 @@ class FastFitTrainable(PreTrainedModel):
                 raise ValueError(f"Unsupported constrained_reward_metric: {reward_metric}")
 
         return loss
+
+    # ------------------------------------------------------------------ window hinge and hinge-activity statistics
+    def hinge_window_begin(self, n_micro):
+        """Called by the trainer at the start of every gradient-accumulation window (n_micro micro-batches)."""
+        self._hinge_win = {"n": int(n_micro), "seen": 0, "S": 0.0, "M": 0, "buf": None, "any_active": False,
+                           "any_mal": False}
+
+    def _hinge_stats(self):
+        st = getattr(self, "_hinge_epoch_stats", None)
+        if st is None:
+            st = self._hinge_epoch_stats = {"units": 0, "units_with_mal": 0, "units_active": 0, "hinge_sum": 0.0,
+                                            "softrec_sum": 0.0, "steps": 0, "steps_with_mal": 0, "steps_active": 0}
+        return st
+
+    def flush_hinge_epoch(self, epoch):
+        """Per-epoch hinge activity (detached statistics; no effect on training). A unit is a micro-batch ('micro')
+        or an accumulation window ('accum'); a step is an optimizer step, active if the hinge is > 0 in any unit."""
+        st = self._hinge_stats()
+        out = {"epoch": epoch, "window": self.config.recall_hinge_window,
+               "rho": self.config.recall_constraint_rho, "lambda": self.config.recall_constraint_lambda,
+               "beta": self.config.false_positive_penalty_beta, "sim_factor": self.config.sim_factor, **st}
+        out["mean_hinge_per_unit"] = st["hinge_sum"] / st["units"] if st["units"] else 0.0
+        out["frac_units_active"] = st["units_active"] / st["units"] if st["units"] else 0.0
+        out["frac_steps_active"] = st["steps_active"] / st["steps"] if st["steps"] else 0.0
+        out["mean_softrec_units_with_mal"] = st["softrec_sum"] / st["units_with_mal"] if st["units_with_mal"] else None
+        self._hinge_epoch_stats = None
+        return out
+
+    def _hinge_unit(self, has_mal, softrec, hinge_value):
+        st = self._hinge_stats()
+        st["units"] += 1
+        if has_mal:
+            st["units_with_mal"] += 1
+            st["softrec_sum"] += float(softrec)
+        if hinge_value > 0.0:
+            st["units_active"] += 1
+        st["hinge_sum"] += float(hinge_value)
+
+    def _hinge_micro_window_track(self, has_mal, active):
+        """Per-optimizer-step bookkeeping in 'micro' mode (a step is active if any micro-batch hinge is > 0)."""
+        win = getattr(self, "_hinge_win", None)
+        if win is None:
+            return
+        win["seen"] += 1
+        win["any_mal"] |= bool(has_mal)
+        win["any_active"] |= bool(active)
+        if win["seen"] == win["n"]:
+            st = self._hinge_stats()
+            st["steps"] += 1
+            st["steps_with_mal"] += int(win["any_mal"])
+            st["steps_active"] += int(win["any_active"])
+            self._hinge_win = None
+
+    def _window_hinge(self, rare_probabilities, rare_mask, recall_weight):
+        """Soft-recall hinge over the gradient-accumulation window (recall_hinge_window='accum').
+
+        Window loss H = lambda * relu(rho - sum_i p_i / M) over all M malicious alerts of the window. Micro-batch
+        graphs are freed after each backward, so for every micro-batch the gradient of s_k = sum of its malicious
+        p_i is stored in a buffer (torch.autograd.grad, retain_graph) and the final micro-batch returns
+        n_micro * [H with the gradient routed to all micro-batches]. The trainer divides every micro-batch loss by
+        the accumulation steps, so the step objective is mean_k(CE_k + SupCon_k) + H; with n_micro = 1 this is the
+        per-micro-batch hinge exactly. A window without a malicious alert contributes 0.
+        """
+        win = getattr(self, "_hinge_win", None)
+        assert win is not None, "the 'accum' hinge needs hinge_window_begin() from the trainer"
+        rho = float(self.config.recall_constraint_rho)
+        lam = float(recall_weight.detach().item())
+        params = getattr(self, "_hinge_params", None)
+        if params is None:
+            params = self._hinge_params = [p for p in self.parameters() if p.requires_grad]
+        win["seen"] += 1
+        last = win["seen"] == win["n"]
+        m_k = int(rare_mask.sum().item())
+        s_k = rare_probabilities[rare_mask].sum() if m_k else None
+        loss = rare_probabilities.new_zeros(())
+        if m_k and not last and torch.is_grad_enabled() and lam > 0.0:
+            grads = torch.autograd.grad(s_k, params, retain_graph=True, allow_unused=True)
+            if win["buf"] is None:
+                win["buf"] = [None] * len(params)
+            for j, g in enumerate(grads):
+                if g is not None:
+                    win["buf"][j] = g.detach() if win["buf"][j] is None else win["buf"][j] + g.detach()
+        if m_k:
+            win["S"] += float(s_k.detach().item())
+            win["M"] += m_k
+        if not last:
+            return loss
+        st = self._hinge_stats()
+        st["steps"] += 1
+        M = win["M"]
+        if M == 0:  # skipped only when the whole window has no malicious alert
+            self._hinge_unit(False, 0.0, 0.0)
+            self._hinge_win = None
+            return loss
+        st["steps_with_mal"] += 1
+        R = win["S"] / M
+        h_val = lam * max(0.0, rho - R)
+        self._hinge_unit(True, R, h_val)
+        if h_val > 0.0:
+            st["steps_active"] += 1
+            coef = -lam / M
+            term = rare_probabilities.new_zeros(())
+            if s_k is not None:
+                term = term + coef * s_k
+            if win["buf"] is not None:
+                for p, b in zip(params, win["buf"]):
+                    if b is not None:
+                        term = term + coef * (b * p).sum()
+            # value = H, gradient = dH/dtheta over the whole window; scaled by n_micro (see docstring)
+            loss = loss + win["n"] * (term - term.detach() + h_val)
+        self._hinge_win = None
+        return loss
+
+    @torch.no_grad()
+    def _would_be_hinge(self, logits, labels, label_id):
+        """lambda=0 (CE) runs: the soft recall the hinge would see, at lambda=1 (detached; no effect on training)."""
+        p = torch.softmax(logits.detach().float(), dim=1)[:, label_id]
+        mask = labels == label_id
+        rho = float(self.config.recall_constraint_rho)
+        if self.config.recall_hinge_window == "micro":
+            has = bool(mask.any())
+            sr = float(p[mask].mean().item()) if has else 0.0
+            hv = max(0.0, rho - sr) if has else 0.0
+            self._hinge_unit(has, sr, hv)
+            self._hinge_micro_window_track(has, hv > 0.0)
+            return
+        win = getattr(self, "_hinge_win", None)
+        if win is None:
+            return
+        win["seen"] += 1
+        win["S"] += float(p[mask].sum().item())
+        win["M"] += int(mask.sum().item())
+        if win["seen"] == win["n"]:
+            st = self._hinge_stats()
+            st["steps"] += 1
+            if win["M"]:
+                R = win["S"] / win["M"]
+                hv = max(0.0, rho - R)
+                st["steps_with_mal"] += 1
+                st["steps_active"] += int(hv > 0.0)
+                self._hinge_unit(True, R, hv)
+            else:
+                self._hinge_unit(False, 0.0, 0.0)
+            self._hinge_win = None
 
     def _current_recall_constraint_lambda(self, logits):
         if self.config.adaptive_dual_enabled:

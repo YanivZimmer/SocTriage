@@ -1,11 +1,11 @@
 quantity,value,paper_location
-Production LLM verdict malicious calls in a tenant B training pool (mean over folds),330.7,RQ3
-True malicious alerts in a tenant B training pool (mean over folds),26.0,RQ3
-Tenant B training-pool size (mean over folds),471.3,RQ3
-Later tenant A alerts with no exemplar at score >= 0.60 (share),0.6559,RQ2 Later alerts
-Benchmark tenant A alerts with no exemplar at score >= 0.60 (share),0.3811,RQ2 Later alerts
-Decisions API repeat calls (production),3300,"Baselines: deterministic across 3,300 repeated calls"
-Decisions API repeat calls agreeing with the main run (share),1.0,Baselines
-P3-changed malicious alerts whose alert name still carries the indicator,15 of 30,Limitations: Adversaries
-Tenant A malicious test alerts marked by one vendor Response value (100% precision),7 of 17,RQ2 Evasive alerts (R0); Limitations: Data
-Gemini 2.5 Pro distinct verbalized confidence values per fold (maximum),6,"RQ2 Seeds, deployable gate and crossover"
+Production LLM verdict malicious calls in a tenant B training pool (mean over folds),330.7,"Results, Weak supervision (tenant B over-calling)"
+True malicious alerts in a tenant B training pool (mean over folds),26.0,"Results, Weak supervision (tenant B over-calling)"
+Tenant B training-pool size (mean over folds),471.3,"Results, Weak supervision (tenant B over-calling)"
+Later tenant A alerts with no exemplar at score >= 0.60 (share),0.6559,"Results, Later alerts"
+Benchmark tenant A alerts with no exemplar at score >= 0.60 (share),0.3811,"Results, Later alerts"
+Decisions API repeat calls (production),3300,"Methods, Baselines: deterministic across 3,300 repeated calls"
+Decisions API repeat calls agreeing with the main run (share),1.0,"Methods, Baselines"
+P3-changed malicious alerts whose alert name still carries the indicator,15 of 30,"Limitations, Adversaries and scope"
+Tenant A malicious test alerts marked by one vendor Response value (100% precision),7 of 17,"Results, Evasive alerts (R0)"
+Gemini 2.5 Pro distinct verbalized confidence values per fold (maximum),6,"Results, Seeds, deployable gate and crossover"

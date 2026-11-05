@@ -12,7 +12,10 @@ Usage:
   python scripts/train_guide.py --splits data/guide_splits/splits --method riskfit --out data/predictions
   python scripts/train_guide.py ... --method ce
   python scripts/train_guide.py ... --method lightgbm
-  # any recipe: --config configs/models/production/maxsim.yaml --method maxsim
+  python scripts/train_guide.py ... --method maxsim          # configs/models/maxsim_guide.yaml
+  python scripts/train_guide.py ... --method knn             # configs/models/knn_guide.yaml (CPU is enough)
+  python scripts/train_guide.py ... --method tiny_decision   # Qwen3-0.6B-LoRA, configs/models/tiny_decision_guide.yaml
+  # any recipe: --config configs/models/production/<recipe>.yaml --method <name>
   # smoke run: --orgs 78 --max-train 24 --max-eval 16 --epochs 1
 """
 from __future__ import annotations
@@ -35,7 +38,8 @@ from riskfit import guide as G  # noqa: E402
 from riskfit.models import TEXT_INPUT, build_model  # noqa: E402
 from riskfit.serialization import render_alert  # noqa: E402
 
-DEFAULT_CONFIG = {"riskfit": "riskfit_guide.yaml", "ce": "ce_guide.yaml", "lightgbm": "lightgbm.yaml"}
+DEFAULT_CONFIG = {"riskfit": "riskfit_guide.yaml", "ce": "ce_guide.yaml", "lightgbm": "lightgbm.yaml",
+                  "maxsim": "maxsim_guide.yaml", "knn": "knn_guide.yaml", "tiny_decision": "tiny_decision_guide.yaml"}
 
 
 def label_weighting(records, gold_weight=2.0, silver_weight=1.0):
@@ -64,7 +68,7 @@ def subsample(recs, n, seed=0):
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--splits", type=Path, required=True, help="the splits/ directory written by build_guide_splits.py")
-    ap.add_argument("--method", required=True, help="output name (riskfit, ce, lightgbm, or any label)")
+    ap.add_argument("--method", required=True, help="output name (riskfit, ce, lightgbm, maxsim, knn, tiny_decision, or any label)")
     ap.add_argument("--config", type=Path, help="model recipe YAML (default: configs/models/<method>_guide.yaml)")
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--orgs", help="comma-separated organizations (default: all 12)")

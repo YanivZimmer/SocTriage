@@ -33,6 +33,15 @@ Usage:
   # score (about 8-11 GB of accelerator memory in bf16):
   python scripts/run_cybersecqwen.py --inputs data/hosted_inputs.jsonl --model-dir models/CyberSecQwen-4B \\
       --device mps --out out/cybersecqwen4b_zeroshot_guide_per_prompt.csv
+
+Base-model control (paper: "its base model Qwen3-4B-Instruct as a control"): the same prompt, chat template and
+label scoring with Qwen/Qwen3-4B-Instruct-2507 at revision cdbee75f17c01a7cc42f958dc650907174af0554
+(released outputs: data/guide_outputs/qwen3_4b_base_zeroshot_guide_per_prompt.csv). The base tokenizer's own chat
+template renders every prompt identically to CyberSecQwen-4B's chat_template.jinja.
+  huggingface-cli download Qwen/Qwen3-4B-Instruct-2507 --revision cdbee75f17c01a7cc42f958dc650907174af0554 \\
+      --local-dir models/Qwen3-4B-Instruct-2507
+  python scripts/run_cybersecqwen.py --inputs data/hosted_inputs.jsonl --model-dir models/Qwen3-4B-Instruct-2507 \\
+      --released data/guide_outputs/qwen3_4b_base_zeroshot_guide_per_prompt.csv --check-tokens
 """
 from __future__ import annotations
 
@@ -120,11 +129,12 @@ def score(model, tok, prompt: str, label_ids: list[list[int]], device: str):
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--inputs", type=Path, required=True, help="data/hosted_inputs.jsonl (scripts/build_hosted_inputs.py)")
-    ap.add_argument("--model-dir", type=Path, required=True, help=f"local snapshot of athena129/CyberSecQwen-4B@{REVISION[:8]}")
+    ap.add_argument("--model-dir", type=Path, required=True, help=f"local snapshot of athena129/CyberSecQwen-4B@{REVISION[:8]} (or of the base model)")
     ap.add_argument("--out", type=Path)
     ap.add_argument("--device", default="cuda", help="cuda, mps or cpu")
     ap.add_argument("--splits", default="test,val")
     ap.add_argument("--limit", type=int)
+    ap.add_argument("--released", type=Path, default=RELEASED, help="released outputs compared by --check-tokens")
     ap.add_argument("--check-tokens", action="store_true",
                     help="only render and tokenize the prompts and compare n_prompt_tokens with the released outputs")
     a = ap.parse_args()
@@ -137,7 +147,7 @@ def main() -> int:
     assert len({i[0] for i in label_ids}) == 3, "labels share a first token"
 
     if a.check_tokens:
-        ref = {(r["split"], r["id"]): int(r["n_prompt_tokens"]) for r in csv.DictReader(RELEASED.open(newline=""))}
+        ref = {(r["split"], r["id"]): int(r["n_prompt_tokens"]) for r in csv.DictReader(a.released.open(newline=""))}
         bad = 0
         for i in items:
             n = len(tok(render(tok, a.model_dir, open_llm_user_prompt(i["zs_user"])), add_special_tokens=False).input_ids)

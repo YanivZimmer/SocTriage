@@ -9,7 +9,7 @@ MaxSim,all,45,73,17,1419,0.6124,297
 kNN (frozen),all,32,73,8,1419,0.5991,418
 LightGBM,all,45,73,23,1419,0.6293,303
 SetFit-LoRA,all,38,73,14,1419,0.6032,364
-Qwen3-LoRA,all,45,73,14,1419,0.5527,294
+Tiny Decision,all,45,73,14,1419,0.5527,294
 Gemini zero-shot,all,43,73,258,1419,0.0313,558
 Gemini + exemplar,all,54,73,72,1419,0.4027,262
 Decisions zero-shot,all,70,73,1170,1419,0.0022,1200
@@ -24,7 +24,7 @@ MaxSim,A,10,17,7,395,0.4892,77
 kNN (frozen),A,6,17,1,395,0.4111,111
 LightGBM,A,10,17,9,395,0.4663,79
 SetFit-LoRA,A,7,17,3,395,0.3969,103
-Qwen3-LoRA,A,7,17,1,395,0.3669,101
+Tiny Decision,A,7,17,1,395,0.3669,101
 Gemini zero-shot,A,11,17,39,395,0.1303,99
 Gemini + exemplar,A,14,17,6,395,0.5403,36
 Decisions zero-shot,A,17,17,306,395,0.0281,306
@@ -39,7 +39,7 @@ MaxSim,B,20,39,8,668,0.5427,198
 kNN (frozen),B,14,39,5,668,0.5659,255
 LightGBM,B,21,39,7,668,0.6639,187
 SetFit-LoRA,B,17,39,8,668,0.5684,228
-Qwen3-LoRA,B,25,39,10,668,0.5082,150
+Tiny Decision,B,25,39,10,668,0.5082,150
 Gemini zero-shot,B,24,39,205,668,0.0042,355
 Gemini + exemplar,B,27,39,61,668,0.1651,181
 Decisions zero-shot,B,39,39,664,668,0.002,664
@@ -54,7 +54,7 @@ MaxSim,C,15,17,2,356,0.8054,22
 kNN (frozen),C,12,17,2,356,0.8203,52
 LightGBM,C,14,17,7,356,0.7577,37
 SetFit-LoRA,C,14,17,3,356,0.8443,33
-Qwen3-LoRA,C,13,17,3,356,0.783,43
+Tiny Decision,C,13,17,3,356,0.783,43
 Gemini zero-shot,C,8,17,14,356,-0.0406,104
 Gemini + exemplar,C,13,17,5,356,0.5027,45
 Decisions zero-shot,C,14,17,200,356,-0.0234,230

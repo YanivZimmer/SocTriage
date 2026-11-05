@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the hosted-model inputs (zero-shot and one-exemplar user messages) for the GUIDE prompts.
+"""Build the hosted-model inputs (zero-shot and 1-, 5- or 20-exemplar user messages) for the GUIDE prompts.
 
 No model or API is called. Checks: the instruction texts hash to the values used in the paper's runs, every
 prompt id re-derives from its rendered text, every exemplar comes from the same organization's training
@@ -7,6 +7,7 @@ split, and (when data/guide_outputs/ is present) every exemplar id equals the on
 
 Usage:
   python scripts/build_hosted_inputs.py --splits data/guide_splits/splits --out data/hosted_inputs.jsonl
+  python scripts/build_hosted_inputs.py ... --k 20 --out data/hosted_inputs_k20.jsonl
   python scripts/build_hosted_inputs.py ... --orgs 78 --splits-to-score test
 """
 from __future__ import annotations
@@ -38,7 +39,7 @@ def main() -> int:
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--orgs", help="comma-separated organizations (default: all 12)")
     ap.add_argument("--splits-to-score", default="test,val")
-    ap.add_argument("--k", type=int, default=1, help="exemplars per prompt (1 = the paper; 5 = the follow-up)")
+    ap.add_argument("--k", type=int, default=1, help="exemplars per prompt (1, 5 or 20 as in the paper)")
     ap.add_argument("--released", type=Path, default=ROOT / "data" / "guide_outputs" / "decisions_guide_per_prompt.csv")
     a = ap.parse_args()
 
@@ -64,13 +65,13 @@ def main() -> int:
                   or rel[(i["split"], i["prompt_id"])]["label"] != i["label"] for i in items)
         print(f"[{'PASS' if not bad else 'FAIL'}] exemplar ids and labels equal the released outputs ({len(items)} prompts, {bad} differ)")
         ok &= bad == 0
-    k5 = ROOT / "data" / "guide_outputs" / "decisions_jev_5ex_guide_per_prompt.csv"
-    if a.k == 5 and k5.exists():
-        rel5 = {(r["split"], r["prompt_id"]): r for r in csv.DictReader(k5.open(newline=""))}
-        bad = sum(rel5[(i["split"], i["prompt_id"])]["user5_sha256"] != P.sha256_text(i["ex_user"])
-                  or [rel5[(i["split"], i["prompt_id"])][f"ex{j}_prompt_id"] for j in range(1, 6)] != i["exemplar_prompt_ids"]
+    kfile = ROOT / "data" / "guide_outputs" / f"decisions_jev_{a.k}ex_guide_per_prompt.csv"
+    if a.k in (5, 20) and kfile.exists():
+        relk = {(r["split"], r["prompt_id"]): r for r in csv.DictReader(kfile.open(newline=""))}
+        bad = sum(relk[(i["split"], i["prompt_id"])][f"user{a.k}_sha256"] != P.sha256_text(i["ex_user"])
+                  or [relk[(i["split"], i["prompt_id"])][f"ex{j}_prompt_id"] for j in range(1, a.k + 1)] != i["exemplar_prompt_ids"]
                   for i in items)
-        print(f"[{'PASS' if not bad else 'FAIL'}] five-exemplar messages equal the released follow-up ({bad} differ)")
+        print(f"[{'PASS' if not bad else 'FAIL'}] {a.k}-exemplar messages equal the released outputs ({bad} differ)")
         ok &= bad == 0
     a.out.parent.mkdir(parents=True, exist_ok=True)
     with a.out.open("w", encoding="utf-8") as fh:

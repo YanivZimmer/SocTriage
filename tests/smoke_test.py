@@ -6,7 +6,8 @@ Steps: (1) rebuild the organization's split and check its fingerprint against co
 outputs; (3) train RiskFit and CE for one epoch on 16 training prompts and LightGBM on the full training split
 (skipped with a stand-in when LightGBM cannot load, e.g. macOS without libomp),
 predicting the organization's full validation and test splits; (4) run the GUIDE analysis for that
-organization with the released hosted outputs (200 bootstrap replicates).
+organization with the released hosted outputs and the released MaxSim, kNN and Tiny Decision predictions
+(200 bootstrap replicates).
 
 Needs the GUIDE CSVs (scripts/download_guide.sh) and the SecureBERT 2.0 weights (downloaded from the
 Hugging Face Hub on first use, about 600 MB; set HF_HUB_OFFLINE=1 if they are already cached).
@@ -65,6 +66,10 @@ def main() -> int:
             f.parent.mkdir(parents=True, exist_ok=True)
             f.write_bytes((w / "predictions" / src / f"org_{a.org}.jsonl").read_bytes())
             print(f"stand-in: {m} <- {src}", flush=True)
+    for m in ("maxsim", "knn", "tiny_decision"):  # not retrained here: the paper's released predictions
+        f = w / "predictions" / m / f"org_{a.org}.jsonl"
+        f.parent.mkdir(parents=True, exist_ok=True)
+        f.write_bytes((ROOT / "data" / "guide_predictions" / m / f"org_{a.org}.jsonl").read_bytes())
     run("scripts/analyze_guide.py", "--predictions", preds, "--splits", splits, "--orgs", a.org,
         "--out", str(w / "analysis"), "--n-boot", "200")
     print(f"SMOKE TEST PASSED (outputs in {w})")
