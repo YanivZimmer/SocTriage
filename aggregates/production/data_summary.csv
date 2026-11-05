@@ -1,0 +1,5 @@
+tenant,alerts,false_positive,tp_benign,tp_malicious,analyst_corrections,malicious_corrections,uncorrected,labels_differing_from_llm_export_verdict,llm_export_verdict_malicious,training_pool_fold_mean_alerts,training_pool_fold_mean_llm_malicious,training_pool_fold_mean_true_malicious,majority_baseline_accuracy,uncorrected_equal_llm_export_verdict
+A,412,7,388,17,31,0,381,33,47,274.7,31.3,11.3,0.9417,379
+B,707,321,347,39,442,2,265,461,496,471.3,330.7,26.0,0.4908,246
+C,373,327,29,17,55,4,318,55,37,248.7,24.7,11.3,0.8767,318
+all,1492,655,764,73,528,6,964,549,580,,,,,943

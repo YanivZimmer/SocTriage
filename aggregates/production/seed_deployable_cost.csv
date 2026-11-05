@@ -1,0 +1,4 @@
+method,gate,cost_c10_seed42,cost_c10_seed43,cost_c10_seed44,mean,sd,decisions_exemplar_cost_c10
+RiskFit,deployable,86,129,93,102.6667,23.0723,155
+CE-A100 (lambda=0),deployable,98,139,82,106.3333,29.3995,155
+MaxSim,deployable,42,134,95,90.3333,46.1772,155

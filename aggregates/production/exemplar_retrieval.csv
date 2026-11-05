@@ -1,0 +1,5 @@
+tenant,with_exemplar_alerts,selection_status_matched,selection_status_no_match,score_lt_0.60,share_score_lt_0.60,score_ge_0.60,exemplar_present_in_prompt,score_min,score_median,score_max
+A,412,255,157,157,0.3811,255,412,0.025,1.0,1.0
+B,707,473,234,234,0.331,473,707,0.06,0.725,1.0
+C,373,348,25,25,0.067,348,373,0.0667,0.75,0.75
+all,1492,1076,416,416,0.2788,1076,1492,,,

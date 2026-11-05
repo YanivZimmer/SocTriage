@@ -1,0 +1,569 @@
+gate,candidate_pool,c,method,point_cost,prob_min_cost_ties_split
+(a) per-org test top 80% by confidence,all 9 methods,5,RiskFit,101,0.637000
+(a) per-org test top 80% by confidence,all 9 methods,5,CE,110,0.363000
+(a) per-org test top 80% by confidence,all 9 methods,5,LightGBM,194,0.000000
+(a) per-org test top 80% by confidence,all 9 methods,5,Decisions zero-shot,497,0.000000
+(a) per-org test top 80% by confidence,all 9 methods,5,Decisions + exemplar,460,0.000000
+(a) per-org test top 80% by confidence,all 9 methods,5,Jev zero-shot,512,0.000000
+(a) per-org test top 80% by confidence,all 9 methods,5,Jev + exemplar,516,0.000000
+(a) per-org test top 80% by confidence,all 9 methods,5,Opus zero-shot,515,0.000000
+(a) per-org test top 80% by confidence,all 9 methods,5,Opus + exemplar,321,0.000000
+(a) per-org test top 80% by confidence,all 9 methods,10,RiskFit,156,0.768000
+(a) per-org test top 80% by confidence,all 9 methods,10,CE,185,0.232000
+(a) per-org test top 80% by confidence,all 9 methods,10,LightGBM,349,0.000000
+(a) per-org test top 80% by confidence,all 9 methods,10,Decisions zero-shot,497,0.000000
+(a) per-org test top 80% by confidence,all 9 methods,10,Decisions + exemplar,500,0.000000
+(a) per-org test top 80% by confidence,all 9 methods,10,Jev zero-shot,532,0.000000
+(a) per-org test top 80% by confidence,all 9 methods,10,Jev + exemplar,651,0.000000
+(a) per-org test top 80% by confidence,all 9 methods,10,Opus zero-shot,540,0.000000
+(a) per-org test top 80% by confidence,all 9 methods,10,Opus + exemplar,401,0.000000
+(a) per-org test top 80% by confidence,all 9 methods,20,RiskFit,266,0.823500
+(a) per-org test top 80% by confidence,all 9 methods,20,CE,335,0.173000
+(a) per-org test top 80% by confidence,all 9 methods,20,LightGBM,659,0.000000
+(a) per-org test top 80% by confidence,all 9 methods,20,Decisions zero-shot,497,0.002000
+(a) per-org test top 80% by confidence,all 9 methods,20,Decisions + exemplar,580,0.000000
+(a) per-org test top 80% by confidence,all 9 methods,20,Jev zero-shot,572,0.000000
+(a) per-org test top 80% by confidence,all 9 methods,20,Jev + exemplar,921,0.000000
+(a) per-org test top 80% by confidence,all 9 methods,20,Opus zero-shot,590,0.000000
+(a) per-org test top 80% by confidence,all 9 methods,20,Opus + exemplar,561,0.001500
+(a) per-org test top 80% by confidence,all 9 methods,50,RiskFit,596,0.230917
+(a) per-org test top 80% by confidence,all 9 methods,50,CE,785,0.036500
+(a) per-org test top 80% by confidence,all 9 methods,50,LightGBM,1589,0.000000
+(a) per-org test top 80% by confidence,all 9 methods,50,Decisions zero-shot,497,0.705917
+(a) per-org test top 80% by confidence,all 9 methods,50,Decisions + exemplar,820,0.001500
+(a) per-org test top 80% by confidence,all 9 methods,50,Jev zero-shot,692,0.017917
+(a) per-org test top 80% by confidence,all 9 methods,50,Jev + exemplar,1731,0.000000
+(a) per-org test top 80% by confidence,all 9 methods,50,Opus zero-shot,740,0.005750
+(a) per-org test top 80% by confidence,all 9 methods,50,Opus + exemplar,1041,0.001500
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,5,RiskFit,101,0.637000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,5,CE,110,0.363000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,5,LightGBM,194,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,5,Decisions zero-shot,497,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,5,Decisions + exemplar,460,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,5,Jev zero-shot,512,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,5,Jev + exemplar,516,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,5,Opus zero-shot,515,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,5,Opus + exemplar,321,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,5,Decisions + 5 exemplars,229,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,5,Jev + 5 exemplars,435,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,10,RiskFit,156,0.768000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,10,CE,185,0.232000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,10,LightGBM,349,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,10,Decisions zero-shot,497,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,10,Decisions + exemplar,500,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,10,Jev zero-shot,532,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,10,Jev + exemplar,651,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,10,Opus zero-shot,540,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,10,Opus + exemplar,401,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,10,Decisions + 5 exemplars,349,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,10,Jev + 5 exemplars,625,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,20,RiskFit,266,0.823000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,20,CE,335,0.172500
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,20,LightGBM,659,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,20,Decisions zero-shot,497,0.002000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,20,Decisions + exemplar,580,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,20,Jev zero-shot,572,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,20,Jev + exemplar,921,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,20,Opus zero-shot,590,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,20,Opus + exemplar,561,0.001500
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,20,Decisions + 5 exemplars,589,0.001000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,20,Jev + 5 exemplars,1005,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,50,RiskFit,596,0.230917
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,50,CE,785,0.036500
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,50,LightGBM,1589,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,50,Decisions zero-shot,497,0.705917
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,50,Decisions + exemplar,820,0.001500
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,50,Jev zero-shot,692,0.017917
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,50,Jev + exemplar,1731,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,50,Opus zero-shot,740,0.005750
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,50,Opus + exemplar,1041,0.001500
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,50,Decisions + 5 exemplars,1309,0.000000
+(a) per-org test top 80% by confidence,all 9 + both five-exemplar conditions,50,Jev + 5 exemplars,2145,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,5,RiskFit,101,0.637000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,5,CE,110,0.363000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,5,LightGBM,194,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,5,Decisions zero-shot,497,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,5,Decisions + exemplar,460,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,5,Jev zero-shot,512,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,5,Jev + exemplar,516,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,5,Opus zero-shot,515,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,5,Opus + exemplar,321,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,5,CyberSecQwen-4B zero-shot,502,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,10,RiskFit,156,0.768000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,10,CE,185,0.232000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,10,LightGBM,349,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,10,Decisions zero-shot,497,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,10,Decisions + exemplar,500,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,10,Jev zero-shot,532,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,10,Jev + exemplar,651,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,10,Opus zero-shot,540,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,10,Opus + exemplar,401,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,10,CyberSecQwen-4B zero-shot,502,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,20,RiskFit,266,0.823500
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,20,CE,335,0.173000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,20,LightGBM,659,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,20,Decisions zero-shot,497,0.001500
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,20,Decisions + exemplar,580,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,20,Jev zero-shot,572,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,20,Jev + exemplar,921,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,20,Opus zero-shot,590,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,20,Opus + exemplar,561,0.001500
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,20,CyberSecQwen-4B zero-shot,502,0.000500
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,50,RiskFit,596,0.229917
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,50,CE,785,0.036500
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,50,LightGBM,1589,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,50,Decisions zero-shot,497,0.558667
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,50,Decisions + exemplar,820,0.001500
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,50,Jev zero-shot,692,0.017667
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,50,Jev + exemplar,1731,0.000000
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,50,Opus zero-shot,740,0.005250
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,50,Opus + exemplar,1041,0.001500
+(a) per-org test top 80% by confidence,all 9 + CyberSecQwen-4B,50,CyberSecQwen-4B zero-shot,502,0.149000
+(a) per-org test top 80% by confidence,all 12 methods,5,RiskFit,101,0.637000
+(a) per-org test top 80% by confidence,all 12 methods,5,CE,110,0.363000
+(a) per-org test top 80% by confidence,all 12 methods,5,LightGBM,194,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,5,Decisions zero-shot,497,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,5,Decisions + exemplar,460,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,5,Jev zero-shot,512,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,5,Jev + exemplar,516,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,5,Opus zero-shot,515,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,5,Opus + exemplar,321,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,5,Decisions + 5 exemplars,229,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,5,Jev + 5 exemplars,435,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,5,CyberSecQwen-4B zero-shot,502,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,10,RiskFit,156,0.768000
+(a) per-org test top 80% by confidence,all 12 methods,10,CE,185,0.232000
+(a) per-org test top 80% by confidence,all 12 methods,10,LightGBM,349,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,10,Decisions zero-shot,497,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,10,Decisions + exemplar,500,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,10,Jev zero-shot,532,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,10,Jev + exemplar,651,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,10,Opus zero-shot,540,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,10,Opus + exemplar,401,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,10,Decisions + 5 exemplars,349,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,10,Jev + 5 exemplars,625,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,10,CyberSecQwen-4B zero-shot,502,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,20,RiskFit,266,0.823000
+(a) per-org test top 80% by confidence,all 12 methods,20,CE,335,0.172500
+(a) per-org test top 80% by confidence,all 12 methods,20,LightGBM,659,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,20,Decisions zero-shot,497,0.001500
+(a) per-org test top 80% by confidence,all 12 methods,20,Decisions + exemplar,580,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,20,Jev zero-shot,572,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,20,Jev + exemplar,921,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,20,Opus zero-shot,590,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,20,Opus + exemplar,561,0.001500
+(a) per-org test top 80% by confidence,all 12 methods,20,Decisions + 5 exemplars,589,0.001000
+(a) per-org test top 80% by confidence,all 12 methods,20,Jev + 5 exemplars,1005,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,20,CyberSecQwen-4B zero-shot,502,0.000500
+(a) per-org test top 80% by confidence,all 12 methods,50,RiskFit,596,0.229917
+(a) per-org test top 80% by confidence,all 12 methods,50,CE,785,0.036500
+(a) per-org test top 80% by confidence,all 12 methods,50,LightGBM,1589,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,50,Decisions zero-shot,497,0.558667
+(a) per-org test top 80% by confidence,all 12 methods,50,Decisions + exemplar,820,0.001500
+(a) per-org test top 80% by confidence,all 12 methods,50,Jev zero-shot,692,0.017667
+(a) per-org test top 80% by confidence,all 12 methods,50,Jev + exemplar,1731,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,50,Opus zero-shot,740,0.005250
+(a) per-org test top 80% by confidence,all 12 methods,50,Opus + exemplar,1041,0.001500
+(a) per-org test top 80% by confidence,all 12 methods,50,Decisions + 5 exemplars,1309,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,50,Jev + 5 exemplars,2145,0.000000
+(a) per-org test top 80% by confidence,all 12 methods,50,CyberSecQwen-4B zero-shot,502,0.149000
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,5,RiskFit,101,0.637000
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,5,CE,110,0.363000
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,5,LightGBM,194,0.000000
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,5,Decisions zero-shot,497,0.000000
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,5,Decisions + exemplar,460,0.000000
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,5,Jev zero-shot,512,0.000000
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,5,Jev + exemplar,516,0.000000
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,10,RiskFit,156,0.768000
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,10,CE,185,0.232000
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,10,LightGBM,349,0.000000
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,10,Decisions zero-shot,497,0.000000
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,10,Decisions + exemplar,500,0.000000
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,10,Jev zero-shot,532,0.000000
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,10,Jev + exemplar,651,0.000000
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,20,RiskFit,266,0.824000
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,20,CE,335,0.173500
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,20,LightGBM,659,0.000000
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,20,Decisions zero-shot,497,0.002250
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,20,Decisions + exemplar,580,0.000250
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,20,Jev zero-shot,572,0.000000
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,20,Jev + exemplar,921,0.000000
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,50,RiskFit,596,0.231417
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,50,CE,785,0.037000
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,50,LightGBM,1589,0.000000
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,50,Decisions zero-shot,497,0.711917
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,50,Decisions + exemplar,820,0.001500
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,50,Jev zero-shot,692,0.018167
+(a) per-org test top 80% by confidence,3 local + 4 decision-model conditions,50,Jev + exemplar,1731,0.000000
+(a) per-org test top 80% by confidence,3 local + both Decisions,5,RiskFit,101,0.637000
+(a) per-org test top 80% by confidence,3 local + both Decisions,5,CE,110,0.363000
+(a) per-org test top 80% by confidence,3 local + both Decisions,5,LightGBM,194,0.000000
+(a) per-org test top 80% by confidence,3 local + both Decisions,5,Decisions zero-shot,497,0.000000
+(a) per-org test top 80% by confidence,3 local + both Decisions,5,Decisions + exemplar,460,0.000000
+(a) per-org test top 80% by confidence,3 local + both Decisions,10,RiskFit,156,0.768000
+(a) per-org test top 80% by confidence,3 local + both Decisions,10,CE,185,0.232000
+(a) per-org test top 80% by confidence,3 local + both Decisions,10,LightGBM,349,0.000000
+(a) per-org test top 80% by confidence,3 local + both Decisions,10,Decisions zero-shot,497,0.000000
+(a) per-org test top 80% by confidence,3 local + both Decisions,10,Decisions + exemplar,500,0.000000
+(a) per-org test top 80% by confidence,3 local + both Decisions,20,RiskFit,266,0.824000
+(a) per-org test top 80% by confidence,3 local + both Decisions,20,CE,335,0.173500
+(a) per-org test top 80% by confidence,3 local + both Decisions,20,LightGBM,659,0.000000
+(a) per-org test top 80% by confidence,3 local + both Decisions,20,Decisions zero-shot,497,0.002250
+(a) per-org test top 80% by confidence,3 local + both Decisions,20,Decisions + exemplar,580,0.000250
+(a) per-org test top 80% by confidence,3 local + both Decisions,50,RiskFit,596,0.231500
+(a) per-org test top 80% by confidence,3 local + both Decisions,50,CE,785,0.037000
+(a) per-org test top 80% by confidence,3 local + both Decisions,50,LightGBM,1589,0.000000
+(a) per-org test top 80% by confidence,3 local + both Decisions,50,Decisions zero-shot,497,0.730000
+(a) per-org test top 80% by confidence,3 local + both Decisions,50,Decisions + exemplar,820,0.001500
+(a) per-org test top 80% by confidence,3 local + Decisions zero-shot only,5,RiskFit,101,0.637000
+(a) per-org test top 80% by confidence,3 local + Decisions zero-shot only,5,CE,110,0.363000
+(a) per-org test top 80% by confidence,3 local + Decisions zero-shot only,5,LightGBM,194,0.000000
+(a) per-org test top 80% by confidence,3 local + Decisions zero-shot only,5,Decisions zero-shot,497,0.000000
+(a) per-org test top 80% by confidence,3 local + Decisions zero-shot only,10,RiskFit,156,0.768000
+(a) per-org test top 80% by confidence,3 local + Decisions zero-shot only,10,CE,185,0.232000
+(a) per-org test top 80% by confidence,3 local + Decisions zero-shot only,10,LightGBM,349,0.000000
+(a) per-org test top 80% by confidence,3 local + Decisions zero-shot only,10,Decisions zero-shot,497,0.000000
+(a) per-org test top 80% by confidence,3 local + Decisions zero-shot only,20,RiskFit,266,0.824000
+(a) per-org test top 80% by confidence,3 local + Decisions zero-shot only,20,CE,335,0.173500
+(a) per-org test top 80% by confidence,3 local + Decisions zero-shot only,20,LightGBM,659,0.000000
+(a) per-org test top 80% by confidence,3 local + Decisions zero-shot only,20,Decisions zero-shot,497,0.002500
+(a) per-org test top 80% by confidence,3 local + Decisions zero-shot only,50,RiskFit,596,0.231500
+(a) per-org test top 80% by confidence,3 local + Decisions zero-shot only,50,CE,785,0.037000
+(a) per-org test top 80% by confidence,3 local + Decisions zero-shot only,50,LightGBM,1589,0.000000
+(a) per-org test top 80% by confidence,3 local + Decisions zero-shot only,50,Decisions zero-shot,497,0.731500
+(a) per-org test top 80% by confidence,3 local + Decisions + exemplar only,5,RiskFit,101,0.637000
+(a) per-org test top 80% by confidence,3 local + Decisions + exemplar only,5,CE,110,0.363000
+(a) per-org test top 80% by confidence,3 local + Decisions + exemplar only,5,LightGBM,194,0.000000
+(a) per-org test top 80% by confidence,3 local + Decisions + exemplar only,5,Decisions + exemplar,460,0.000000
+(a) per-org test top 80% by confidence,3 local + Decisions + exemplar only,10,RiskFit,156,0.768000
+(a) per-org test top 80% by confidence,3 local + Decisions + exemplar only,10,CE,185,0.232000
+(a) per-org test top 80% by confidence,3 local + Decisions + exemplar only,10,LightGBM,349,0.000000
+(a) per-org test top 80% by confidence,3 local + Decisions + exemplar only,10,Decisions + exemplar,500,0.000000
+(a) per-org test top 80% by confidence,3 local + Decisions + exemplar only,20,RiskFit,266,0.825000
+(a) per-org test top 80% by confidence,3 local + Decisions + exemplar only,20,CE,335,0.174000
+(a) per-org test top 80% by confidence,3 local + Decisions + exemplar only,20,LightGBM,659,0.000000
+(a) per-org test top 80% by confidence,3 local + Decisions + exemplar only,20,Decisions + exemplar,580,0.001000
+(a) per-org test top 80% by confidence,3 local + Decisions + exemplar only,50,RiskFit,596,0.723500
+(a) per-org test top 80% by confidence,3 local + Decisions + exemplar only,50,CE,785,0.134000
+(a) per-org test top 80% by confidence,3 local + Decisions + exemplar only,50,LightGBM,1589,0.000000
+(a) per-org test top 80% by confidence,3 local + Decisions + exemplar only,50,Decisions + exemplar,820,0.142500
+(a) per-org test top 80% by confidence,3 local + Jev zero-shot only,5,RiskFit,101,0.637000
+(a) per-org test top 80% by confidence,3 local + Jev zero-shot only,5,CE,110,0.363000
+(a) per-org test top 80% by confidence,3 local + Jev zero-shot only,5,LightGBM,194,0.000000
+(a) per-org test top 80% by confidence,3 local + Jev zero-shot only,5,Jev zero-shot,512,0.000000
+(a) per-org test top 80% by confidence,3 local + Jev zero-shot only,10,RiskFit,156,0.768000
+(a) per-org test top 80% by confidence,3 local + Jev zero-shot only,10,CE,185,0.232000
+(a) per-org test top 80% by confidence,3 local + Jev zero-shot only,10,LightGBM,349,0.000000
+(a) per-org test top 80% by confidence,3 local + Jev zero-shot only,10,Jev zero-shot,532,0.000000
+(a) per-org test top 80% by confidence,3 local + Jev zero-shot only,20,RiskFit,266,0.825500
+(a) per-org test top 80% by confidence,3 local + Jev zero-shot only,20,CE,335,0.174500
+(a) per-org test top 80% by confidence,3 local + Jev zero-shot only,20,LightGBM,659,0.000000
+(a) per-org test top 80% by confidence,3 local + Jev zero-shot only,20,Jev zero-shot,572,0.000000
+(a) per-org test top 80% by confidence,3 local + Jev zero-shot only,50,RiskFit,596,0.554500
+(a) per-org test top 80% by confidence,3 local + Jev zero-shot only,50,CE,785,0.104500
+(a) per-org test top 80% by confidence,3 local + Jev zero-shot only,50,LightGBM,1589,0.000000
+(a) per-org test top 80% by confidence,3 local + Jev zero-shot only,50,Jev zero-shot,692,0.341000
+(a) per-org test top 80% by confidence,3 local + Jev + exemplar only,5,RiskFit,101,0.637000
+(a) per-org test top 80% by confidence,3 local + Jev + exemplar only,5,CE,110,0.363000
+(a) per-org test top 80% by confidence,3 local + Jev + exemplar only,5,LightGBM,194,0.000000
+(a) per-org test top 80% by confidence,3 local + Jev + exemplar only,5,Jev + exemplar,516,0.000000
+(a) per-org test top 80% by confidence,3 local + Jev + exemplar only,10,RiskFit,156,0.768000
+(a) per-org test top 80% by confidence,3 local + Jev + exemplar only,10,CE,185,0.232000
+(a) per-org test top 80% by confidence,3 local + Jev + exemplar only,10,LightGBM,349,0.000000
+(a) per-org test top 80% by confidence,3 local + Jev + exemplar only,10,Jev + exemplar,651,0.000000
+(a) per-org test top 80% by confidence,3 local + Jev + exemplar only,20,RiskFit,266,0.825500
+(a) per-org test top 80% by confidence,3 local + Jev + exemplar only,20,CE,335,0.174500
+(a) per-org test top 80% by confidence,3 local + Jev + exemplar only,20,LightGBM,659,0.000000
+(a) per-org test top 80% by confidence,3 local + Jev + exemplar only,20,Jev + exemplar,921,0.000000
+(a) per-org test top 80% by confidence,3 local + Jev + exemplar only,50,RiskFit,596,0.827500
+(a) per-org test top 80% by confidence,3 local + Jev + exemplar only,50,CE,785,0.172500
+(a) per-org test top 80% by confidence,3 local + Jev + exemplar only,50,LightGBM,1589,0.000000
+(a) per-org test top 80% by confidence,3 local + Jev + exemplar only,50,Jev + exemplar,1731,0.000000
+(a) per-org test top 80% by confidence,3 local + Opus zero-shot only,5,RiskFit,101,0.637000
+(a) per-org test top 80% by confidence,3 local + Opus zero-shot only,5,CE,110,0.363000
+(a) per-org test top 80% by confidence,3 local + Opus zero-shot only,5,LightGBM,194,0.000000
+(a) per-org test top 80% by confidence,3 local + Opus zero-shot only,5,Opus zero-shot,515,0.000000
+(a) per-org test top 80% by confidence,3 local + Opus zero-shot only,10,RiskFit,156,0.768000
+(a) per-org test top 80% by confidence,3 local + Opus zero-shot only,10,CE,185,0.232000
+(a) per-org test top 80% by confidence,3 local + Opus zero-shot only,10,LightGBM,349,0.000000
+(a) per-org test top 80% by confidence,3 local + Opus zero-shot only,10,Opus zero-shot,540,0.000000
+(a) per-org test top 80% by confidence,3 local + Opus zero-shot only,20,RiskFit,266,0.824750
+(a) per-org test top 80% by confidence,3 local + Opus zero-shot only,20,CE,335,0.174500
+(a) per-org test top 80% by confidence,3 local + Opus zero-shot only,20,LightGBM,659,0.000000
+(a) per-org test top 80% by confidence,3 local + Opus zero-shot only,20,Opus zero-shot,590,0.000750
+(a) per-org test top 80% by confidence,3 local + Opus zero-shot only,50,RiskFit,596,0.597000
+(a) per-org test top 80% by confidence,3 local + Opus zero-shot only,50,CE,785,0.113750
+(a) per-org test top 80% by confidence,3 local + Opus zero-shot only,50,LightGBM,1589,0.000000
+(a) per-org test top 80% by confidence,3 local + Opus zero-shot only,50,Opus zero-shot,740,0.289250
+(a) per-org test top 80% by confidence,3 local + Opus + exemplar only,5,RiskFit,101,0.637000
+(a) per-org test top 80% by confidence,3 local + Opus + exemplar only,5,CE,110,0.363000
+(a) per-org test top 80% by confidence,3 local + Opus + exemplar only,5,LightGBM,194,0.000000
+(a) per-org test top 80% by confidence,3 local + Opus + exemplar only,5,Opus + exemplar,321,0.000000
+(a) per-org test top 80% by confidence,3 local + Opus + exemplar only,10,RiskFit,156,0.768000
+(a) per-org test top 80% by confidence,3 local + Opus + exemplar only,10,CE,185,0.232000
+(a) per-org test top 80% by confidence,3 local + Opus + exemplar only,10,LightGBM,349,0.000000
+(a) per-org test top 80% by confidence,3 local + Opus + exemplar only,10,Opus + exemplar,401,0.000000
+(a) per-org test top 80% by confidence,3 local + Opus + exemplar only,20,RiskFit,266,0.825000
+(a) per-org test top 80% by confidence,3 local + Opus + exemplar only,20,CE,335,0.173500
+(a) per-org test top 80% by confidence,3 local + Opus + exemplar only,20,LightGBM,659,0.000000
+(a) per-org test top 80% by confidence,3 local + Opus + exemplar only,20,Opus + exemplar,561,0.001500
+(a) per-org test top 80% by confidence,3 local + Opus + exemplar only,50,RiskFit,596,0.800000
+(a) per-org test top 80% by confidence,3 local + Opus + exemplar only,50,CE,785,0.159750
+(a) per-org test top 80% by confidence,3 local + Opus + exemplar only,50,LightGBM,1589,0.000000
+(a) per-org test top 80% by confidence,3 local + Opus + exemplar only,50,Opus + exemplar,1041,0.040250
+(a) per-org test top 80% by confidence,3 local + Decisions + 5 exemplars only,5,RiskFit,101,0.637000
+(a) per-org test top 80% by confidence,3 local + Decisions + 5 exemplars only,5,CE,110,0.363000
+(a) per-org test top 80% by confidence,3 local + Decisions + 5 exemplars only,5,LightGBM,194,0.000000
+(a) per-org test top 80% by confidence,3 local + Decisions + 5 exemplars only,5,Decisions + 5 exemplars,229,0.000000
+(a) per-org test top 80% by confidence,3 local + Decisions + 5 exemplars only,10,RiskFit,156,0.768000
+(a) per-org test top 80% by confidence,3 local + Decisions + 5 exemplars only,10,CE,185,0.232000
+(a) per-org test top 80% by confidence,3 local + Decisions + 5 exemplars only,10,LightGBM,349,0.000000
+(a) per-org test top 80% by confidence,3 local + Decisions + 5 exemplars only,10,Decisions + 5 exemplars,349,0.000000
+(a) per-org test top 80% by confidence,3 local + Decisions + 5 exemplars only,20,RiskFit,266,0.825000
+(a) per-org test top 80% by confidence,3 local + Decisions + 5 exemplars only,20,CE,335,0.174000
+(a) per-org test top 80% by confidence,3 local + Decisions + 5 exemplars only,20,LightGBM,659,0.000000
+(a) per-org test top 80% by confidence,3 local + Decisions + 5 exemplars only,20,Decisions + 5 exemplars,589,0.001000
+(a) per-org test top 80% by confidence,3 local + Decisions + 5 exemplars only,50,RiskFit,596,0.826000
+(a) per-org test top 80% by confidence,3 local + Decisions + 5 exemplars only,50,CE,785,0.171000
+(a) per-org test top 80% by confidence,3 local + Decisions + 5 exemplars only,50,LightGBM,1589,0.000000
+(a) per-org test top 80% by confidence,3 local + Decisions + 5 exemplars only,50,Decisions + 5 exemplars,1309,0.003000
+(a) per-org test top 80% by confidence,3 local + Jev + 5 exemplars only,5,RiskFit,101,0.637000
+(a) per-org test top 80% by confidence,3 local + Jev + 5 exemplars only,5,CE,110,0.363000
+(a) per-org test top 80% by confidence,3 local + Jev + 5 exemplars only,5,LightGBM,194,0.000000
+(a) per-org test top 80% by confidence,3 local + Jev + 5 exemplars only,5,Jev + 5 exemplars,435,0.000000
+(a) per-org test top 80% by confidence,3 local + Jev + 5 exemplars only,10,RiskFit,156,0.768000
+(a) per-org test top 80% by confidence,3 local + Jev + 5 exemplars only,10,CE,185,0.232000
+(a) per-org test top 80% by confidence,3 local + Jev + 5 exemplars only,10,LightGBM,349,0.000000
+(a) per-org test top 80% by confidence,3 local + Jev + 5 exemplars only,10,Jev + 5 exemplars,625,0.000000
+(a) per-org test top 80% by confidence,3 local + Jev + 5 exemplars only,20,RiskFit,266,0.825500
+(a) per-org test top 80% by confidence,3 local + Jev + 5 exemplars only,20,CE,335,0.174500
+(a) per-org test top 80% by confidence,3 local + Jev + 5 exemplars only,20,LightGBM,659,0.000000
+(a) per-org test top 80% by confidence,3 local + Jev + 5 exemplars only,20,Jev + 5 exemplars,1005,0.000000
+(a) per-org test top 80% by confidence,3 local + Jev + 5 exemplars only,50,RiskFit,596,0.827500
+(a) per-org test top 80% by confidence,3 local + Jev + 5 exemplars only,50,CE,785,0.172500
+(a) per-org test top 80% by confidence,3 local + Jev + 5 exemplars only,50,LightGBM,1589,0.000000
+(a) per-org test top 80% by confidence,3 local + Jev + 5 exemplars only,50,Jev + 5 exemplars,2145,0.000000
+(a) per-org test top 80% by confidence,3 local + CyberSecQwen-4B zero-shot only,5,RiskFit,101,0.637000
+(a) per-org test top 80% by confidence,3 local + CyberSecQwen-4B zero-shot only,5,CE,110,0.363000
+(a) per-org test top 80% by confidence,3 local + CyberSecQwen-4B zero-shot only,5,LightGBM,194,0.000000
+(a) per-org test top 80% by confidence,3 local + CyberSecQwen-4B zero-shot only,5,CyberSecQwen-4B zero-shot,502,0.000000
+(a) per-org test top 80% by confidence,3 local + CyberSecQwen-4B zero-shot only,10,RiskFit,156,0.768000
+(a) per-org test top 80% by confidence,3 local + CyberSecQwen-4B zero-shot only,10,CE,185,0.232000
+(a) per-org test top 80% by confidence,3 local + CyberSecQwen-4B zero-shot only,10,LightGBM,349,0.000000
+(a) per-org test top 80% by confidence,3 local + CyberSecQwen-4B zero-shot only,10,CyberSecQwen-4B zero-shot,502,0.000000
+(a) per-org test top 80% by confidence,3 local + CyberSecQwen-4B zero-shot only,20,RiskFit,266,0.824000
+(a) per-org test top 80% by confidence,3 local + CyberSecQwen-4B zero-shot only,20,CE,335,0.174000
+(a) per-org test top 80% by confidence,3 local + CyberSecQwen-4B zero-shot only,20,LightGBM,659,0.000000
+(a) per-org test top 80% by confidence,3 local + CyberSecQwen-4B zero-shot only,20,CyberSecQwen-4B zero-shot,502,0.002000
+(a) per-org test top 80% by confidence,3 local + CyberSecQwen-4B zero-shot only,50,RiskFit,596,0.246750
+(a) per-org test top 80% by confidence,3 local + CyberSecQwen-4B zero-shot only,50,CE,785,0.037000
+(a) per-org test top 80% by confidence,3 local + CyberSecQwen-4B zero-shot only,50,LightGBM,1589,0.000000
+(a) per-org test top 80% by confidence,3 local + CyberSecQwen-4B zero-shot only,50,CyberSecQwen-4B zero-shot,502,0.716250
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,5,RiskFit,101,0.637000
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,5,CE,110,0.363000
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,5,LightGBM,194,0.000000
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,5,Decisions + exemplar,460,0.000000
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,5,Jev + exemplar,516,0.000000
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,5,Opus + exemplar,321,0.000000
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,10,RiskFit,156,0.768000
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,10,CE,185,0.232000
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,10,LightGBM,349,0.000000
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,10,Decisions + exemplar,500,0.000000
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,10,Jev + exemplar,651,0.000000
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,10,Opus + exemplar,401,0.000000
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,20,RiskFit,266,0.824500
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,20,CE,335,0.173500
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,20,LightGBM,659,0.000000
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,20,Decisions + exemplar,580,0.000500
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,20,Jev + exemplar,921,0.000000
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,20,Opus + exemplar,561,0.001500
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,50,RiskFit,596,0.716000
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,50,CE,785,0.130750
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,50,LightGBM,1589,0.000000
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,50,Decisions + exemplar,820,0.132500
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,50,Jev + exemplar,1731,0.000000
+(a) per-org test top 80% by confidence,3 local + all three exemplar conditions,50,Opus + exemplar,1041,0.020750
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,5,RiskFit,101,0.637000
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,5,CE,110,0.363000
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,5,LightGBM,194,0.000000
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,5,Decisions zero-shot,497,0.000000
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,5,Jev zero-shot,512,0.000000
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,5,Opus zero-shot,515,0.000000
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,10,RiskFit,156,0.768000
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,10,CE,185,0.232000
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,10,LightGBM,349,0.000000
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,10,Decisions zero-shot,497,0.000000
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,10,Jev zero-shot,532,0.000000
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,10,Opus zero-shot,540,0.000000
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,20,RiskFit,266,0.824000
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,20,CE,335,0.173500
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,20,LightGBM,659,0.000000
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,20,Decisions zero-shot,497,0.002500
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,20,Jev zero-shot,572,0.000000
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,20,Opus zero-shot,590,0.000000
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,50,RiskFit,596,0.230917
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,50,CE,785,0.037000
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,50,LightGBM,1589,0.000000
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,50,Decisions zero-shot,497,0.708417
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,50,Jev zero-shot,692,0.017917
+(a) per-org test top 80% by confidence,3 local + all three zero-shot conditions,50,Opus zero-shot,740,0.005750
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,5,RiskFit,107,0.533000
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,5,CE,108,0.466750
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,5,LightGBM,182,0.000250
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,5,Decisions zero-shot,501,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,5,Decisions + exemplar,466,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,5,Jev zero-shot,525,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,5,Jev + exemplar,535,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,10,RiskFit,167,0.759000
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,10,CE,183,0.241000
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,10,LightGBM,327,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,10,Decisions zero-shot,501,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,10,Decisions + exemplar,516,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,10,Jev zero-shot,545,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,10,Jev + exemplar,675,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,20,RiskFit,287,0.873000
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,20,CE,333,0.124500
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,20,LightGBM,617,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,20,Decisions zero-shot,501,0.002500
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,20,Decisions + exemplar,616,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,20,Jev zero-shot,585,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,20,Jev + exemplar,955,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,50,RiskFit,647,0.199500
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,50,CE,783,0.021750
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,50,LightGBM,1487,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,50,Decisions zero-shot,501,0.772000
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,50,Decisions + exemplar,916,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,50,Jev zero-shot,705,0.006750
+(b) deployable: tau at 80% validation coverage,3 local + 4 decision-model conditions,50,Jev + exemplar,1795,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + both Decisions,5,RiskFit,107,0.533000
+(b) deployable: tau at 80% validation coverage,3 local + both Decisions,5,CE,108,0.466750
+(b) deployable: tau at 80% validation coverage,3 local + both Decisions,5,LightGBM,182,0.000250
+(b) deployable: tau at 80% validation coverage,3 local + both Decisions,5,Decisions zero-shot,501,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + both Decisions,5,Decisions + exemplar,466,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + both Decisions,10,RiskFit,167,0.759000
+(b) deployable: tau at 80% validation coverage,3 local + both Decisions,10,CE,183,0.241000
+(b) deployable: tau at 80% validation coverage,3 local + both Decisions,10,LightGBM,327,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + both Decisions,10,Decisions zero-shot,501,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + both Decisions,10,Decisions + exemplar,516,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + both Decisions,20,RiskFit,287,0.873000
+(b) deployable: tau at 80% validation coverage,3 local + both Decisions,20,CE,333,0.124500
+(b) deployable: tau at 80% validation coverage,3 local + both Decisions,20,LightGBM,617,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + both Decisions,20,Decisions zero-shot,501,0.002500
+(b) deployable: tau at 80% validation coverage,3 local + both Decisions,20,Decisions + exemplar,616,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + both Decisions,50,RiskFit,647,0.199750
+(b) deployable: tau at 80% validation coverage,3 local + both Decisions,50,CE,783,0.021750
+(b) deployable: tau at 80% validation coverage,3 local + both Decisions,50,LightGBM,1487,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + both Decisions,50,Decisions zero-shot,501,0.778500
+(b) deployable: tau at 80% validation coverage,3 local + both Decisions,50,Decisions + exemplar,916,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions zero-shot only,5,RiskFit,107,0.533000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions zero-shot only,5,CE,108,0.466750
+(b) deployable: tau at 80% validation coverage,3 local + Decisions zero-shot only,5,LightGBM,182,0.000250
+(b) deployable: tau at 80% validation coverage,3 local + Decisions zero-shot only,5,Decisions zero-shot,501,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions zero-shot only,10,RiskFit,167,0.759000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions zero-shot only,10,CE,183,0.241000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions zero-shot only,10,LightGBM,327,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions zero-shot only,10,Decisions zero-shot,501,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions zero-shot only,20,RiskFit,287,0.873000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions zero-shot only,20,CE,333,0.124500
+(b) deployable: tau at 80% validation coverage,3 local + Decisions zero-shot only,20,LightGBM,617,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions zero-shot only,20,Decisions zero-shot,501,0.002500
+(b) deployable: tau at 80% validation coverage,3 local + Decisions zero-shot only,50,RiskFit,647,0.199750
+(b) deployable: tau at 80% validation coverage,3 local + Decisions zero-shot only,50,CE,783,0.021750
+(b) deployable: tau at 80% validation coverage,3 local + Decisions zero-shot only,50,LightGBM,1487,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions zero-shot only,50,Decisions zero-shot,501,0.778500
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + exemplar only,5,RiskFit,107,0.533000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + exemplar only,5,CE,108,0.466750
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + exemplar only,5,LightGBM,182,0.000250
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + exemplar only,5,Decisions + exemplar,466,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + exemplar only,10,RiskFit,167,0.759000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + exemplar only,10,CE,183,0.241000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + exemplar only,10,LightGBM,327,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + exemplar only,10,Decisions + exemplar,516,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + exemplar only,20,RiskFit,287,0.875000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + exemplar only,20,CE,333,0.125000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + exemplar only,20,LightGBM,617,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + exemplar only,20,Decisions + exemplar,616,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + exemplar only,50,RiskFit,647,0.814250
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + exemplar only,50,CE,783,0.102750
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + exemplar only,50,LightGBM,1487,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + exemplar only,50,Decisions + exemplar,916,0.083000
+(b) deployable: tau at 80% validation coverage,3 local + Jev zero-shot only,5,RiskFit,107,0.533000
+(b) deployable: tau at 80% validation coverage,3 local + Jev zero-shot only,5,CE,108,0.466750
+(b) deployable: tau at 80% validation coverage,3 local + Jev zero-shot only,5,LightGBM,182,0.000250
+(b) deployable: tau at 80% validation coverage,3 local + Jev zero-shot only,5,Jev zero-shot,525,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Jev zero-shot only,10,RiskFit,167,0.759000
+(b) deployable: tau at 80% validation coverage,3 local + Jev zero-shot only,10,CE,183,0.241000
+(b) deployable: tau at 80% validation coverage,3 local + Jev zero-shot only,10,LightGBM,327,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Jev zero-shot only,10,Jev zero-shot,545,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Jev zero-shot only,20,RiskFit,287,0.875000
+(b) deployable: tau at 80% validation coverage,3 local + Jev zero-shot only,20,CE,333,0.125000
+(b) deployable: tau at 80% validation coverage,3 local + Jev zero-shot only,20,LightGBM,617,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Jev zero-shot only,20,Jev zero-shot,585,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Jev zero-shot only,50,RiskFit,647,0.559250
+(b) deployable: tau at 80% validation coverage,3 local + Jev zero-shot only,50,CE,783,0.067500
+(b) deployable: tau at 80% validation coverage,3 local + Jev zero-shot only,50,LightGBM,1487,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Jev zero-shot only,50,Jev zero-shot,705,0.373250
+(b) deployable: tau at 80% validation coverage,3 local + Jev + exemplar only,5,RiskFit,107,0.533000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + exemplar only,5,CE,108,0.466750
+(b) deployable: tau at 80% validation coverage,3 local + Jev + exemplar only,5,LightGBM,182,0.000250
+(b) deployable: tau at 80% validation coverage,3 local + Jev + exemplar only,5,Jev + exemplar,535,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + exemplar only,10,RiskFit,167,0.759000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + exemplar only,10,CE,183,0.241000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + exemplar only,10,LightGBM,327,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + exemplar only,10,Jev + exemplar,675,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + exemplar only,20,RiskFit,287,0.875000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + exemplar only,20,CE,333,0.125000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + exemplar only,20,LightGBM,617,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + exemplar only,20,Jev + exemplar,955,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + exemplar only,50,RiskFit,647,0.885000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + exemplar only,50,CE,783,0.115000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + exemplar only,50,LightGBM,1487,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + exemplar only,50,Jev + exemplar,1795,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + 5 exemplars only,5,RiskFit,107,0.533000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + 5 exemplars only,5,CE,108,0.466750
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + 5 exemplars only,5,LightGBM,182,0.000250
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + 5 exemplars only,5,Decisions + 5 exemplars,244,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + 5 exemplars only,10,RiskFit,167,0.759000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + 5 exemplars only,10,CE,183,0.241000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + 5 exemplars only,10,LightGBM,327,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + 5 exemplars only,10,Decisions + 5 exemplars,379,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + 5 exemplars only,20,RiskFit,287,0.875000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + 5 exemplars only,20,CE,333,0.125000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + 5 exemplars only,20,LightGBM,617,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + 5 exemplars only,20,Decisions + 5 exemplars,649,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + 5 exemplars only,50,RiskFit,647,0.884500
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + 5 exemplars only,50,CE,783,0.114500
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + 5 exemplars only,50,LightGBM,1487,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Decisions + 5 exemplars only,50,Decisions + 5 exemplars,1459,0.001000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + 5 exemplars only,5,RiskFit,107,0.533000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + 5 exemplars only,5,CE,108,0.466750
+(b) deployable: tau at 80% validation coverage,3 local + Jev + 5 exemplars only,5,LightGBM,182,0.000250
+(b) deployable: tau at 80% validation coverage,3 local + Jev + 5 exemplars only,5,Jev + 5 exemplars,457,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + 5 exemplars only,10,RiskFit,167,0.759000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + 5 exemplars only,10,CE,183,0.241000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + 5 exemplars only,10,LightGBM,327,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + 5 exemplars only,10,Jev + 5 exemplars,667,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + 5 exemplars only,20,RiskFit,287,0.875000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + 5 exemplars only,20,CE,333,0.125000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + 5 exemplars only,20,LightGBM,617,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + 5 exemplars only,20,Jev + 5 exemplars,1087,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + 5 exemplars only,50,RiskFit,647,0.885000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + 5 exemplars only,50,CE,783,0.115000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + 5 exemplars only,50,LightGBM,1487,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + Jev + 5 exemplars only,50,Jev + 5 exemplars,2347,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + CyberSecQwen-4B zero-shot only,5,RiskFit,107,0.533000
+(b) deployable: tau at 80% validation coverage,3 local + CyberSecQwen-4B zero-shot only,5,CE,108,0.466750
+(b) deployable: tau at 80% validation coverage,3 local + CyberSecQwen-4B zero-shot only,5,LightGBM,182,0.000250
+(b) deployable: tau at 80% validation coverage,3 local + CyberSecQwen-4B zero-shot only,5,CyberSecQwen-4B zero-shot,501,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + CyberSecQwen-4B zero-shot only,10,RiskFit,167,0.759000
+(b) deployable: tau at 80% validation coverage,3 local + CyberSecQwen-4B zero-shot only,10,CE,183,0.241000
+(b) deployable: tau at 80% validation coverage,3 local + CyberSecQwen-4B zero-shot only,10,LightGBM,327,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + CyberSecQwen-4B zero-shot only,10,CyberSecQwen-4B zero-shot,501,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + CyberSecQwen-4B zero-shot only,20,RiskFit,287,0.873750
+(b) deployable: tau at 80% validation coverage,3 local + CyberSecQwen-4B zero-shot only,20,CE,333,0.124500
+(b) deployable: tau at 80% validation coverage,3 local + CyberSecQwen-4B zero-shot only,20,LightGBM,617,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + CyberSecQwen-4B zero-shot only,20,CyberSecQwen-4B zero-shot,501,0.001750
+(b) deployable: tau at 80% validation coverage,3 local + CyberSecQwen-4B zero-shot only,50,RiskFit,647,0.199000
+(b) deployable: tau at 80% validation coverage,3 local + CyberSecQwen-4B zero-shot only,50,CE,783,0.022000
+(b) deployable: tau at 80% validation coverage,3 local + CyberSecQwen-4B zero-shot only,50,LightGBM,1487,0.000000
+(b) deployable: tau at 80% validation coverage,3 local + CyberSecQwen-4B zero-shot only,50,CyberSecQwen-4B zero-shot,501,0.779000

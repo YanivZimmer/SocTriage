@@ -1,4 +1,5 @@
-"""Prompts and label-blind exemplar retrieval for the hosted models (Decisions API, Jev, Claude Opus).
+"""Prompts and label-blind exemplar retrieval for the hosted models (Decisions API, Jev, Claude Opus) and the
+locally run open LLM (CyberSecQwen-4B, zero-shot; see open_llm_user_prompt).
 
 All hosted models receive byte-identical user messages:
 
@@ -98,6 +99,23 @@ def opus_system_prompt() -> str:
             '{"verdict": "false_positive" | "benign" | "malicious", '
             '"confidence": <number 0-1, your confidence that the verdict is correct>, '
             '"p_malicious": <number 0-1, your probability that the alert is malicious>}')
+
+
+OPEN_LLM_QUESTION = ("Which verdict applies to the TARGET ALERT? Answer with exactly one word: "
+                     "false_positive, benign, or malicious.")
+
+
+def open_llm_user_prompt(zs_user: str) -> str:
+    """Single user turn for the open LLM (CyberSecQwen-4B, zero-shot): Opus's instructions with the JSON output
+    block replaced by a one-label answer, then the zero-shot user message, then the question. The model is scored
+    on the three label strings, so it is never asked for a confidence."""
+    q1, q2 = decisions_questions()
+    choice = q1["instructions"] + "".join(f"\n- {c['value']}: {c['description']}" for c in q1["choices"])
+    instructions = ("You classify one security alert per request.\n\n"
+                    f"QUESTION 1 (verdict):\n{choice}\n\n"
+                    f"QUESTION 2 (is_malicious):\n{q2['instructions']}\n\n"
+                    "Answer QUESTION 1 only, with a single verdict label and nothing else: false_positive, benign, or malicious.")
+    return instructions + "\n\n" + zs_user + "\n\n" + OPEN_LLM_QUESTION
 
 
 def check_instruction_hashes() -> dict[str, bool]:

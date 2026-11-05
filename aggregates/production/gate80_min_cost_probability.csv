@@ -1,0 +1,55 @@
+candidate_pool,c,method,point_cost,prob_min_cost_ties_split
+all 14 methods,5,RiskFit,73,0.0067
+all 14 methods,5,RiskFit rho=0.8,55,0.0354
+all 14 methods,5,RiskFit lambda=4,71,0.0069
+all 14 methods,5,CE,53,0.1051
+all 14 methods,5,Focal-Tversky,53,0.0876
+all 14 methods,5,MaxSim,39,0.6671
+all 14 methods,5,kNN (frozen),82,0.0037
+all 14 methods,5,LightGBM,71,0.0102
+all 14 methods,5,SetFit-LoRA,84,0.001
+all 14 methods,5,Qwen3-LoRA,55,0.0762
+all 14 methods,5,Gemini zero-shot,286,0.0
+all 14 methods,5,Gemini + exemplar,96,0.0
+all 14 methods,5,Decisions zero-shot,950,0.0
+all 14 methods,5,Decisions + exemplar,154,0.0
+all 14 methods,10,RiskFit,118,0.038
+all 14 methods,10,RiskFit rho=0.8,85,0.1217
+all 14 methods,10,RiskFit lambda=4,111,0.0354
+all 14 methods,10,CE,98,0.0919
+all 14 methods,10,Focal-Tversky,88,0.1358
+all 14 methods,10,MaxSim,74,0.5224
+all 14 methods,10,kNN (frozen),162,0.0003
+all 14 methods,10,LightGBM,136,0.0083
+all 14 methods,10,SetFit-LoRA,164,0.0
+all 14 methods,10,Qwen3-LoRA,105,0.046
+all 14 methods,10,Gemini zero-shot,391,0.0
+all 14 methods,10,Gemini + exemplar,151,0.0
+all 14 methods,10,Decisions zero-shot,955,0.0
+all 14 methods,10,Decisions + exemplar,154,0.0003
+all 14 methods,20,RiskFit,208,0.0395
+all 14 methods,20,RiskFit rho=0.8,145,0.1449
+all 14 methods,20,RiskFit lambda=4,191,0.055
+all 14 methods,20,CE,188,0.055
+all 14 methods,20,Focal-Tversky,158,0.1212
+all 14 methods,20,MaxSim,144,0.3559
+all 14 methods,20,kNN (frozen),322,0.0
+all 14 methods,20,LightGBM,266,0.0032
+all 14 methods,20,SetFit-LoRA,324,0.0
+all 14 methods,20,Qwen3-LoRA,205,0.0224
+all 14 methods,20,Gemini zero-shot,601,0.0
+all 14 methods,20,Gemini + exemplar,261,0.002
+all 14 methods,20,Decisions zero-shot,965,0.0
+all 14 methods,20,Decisions + exemplar,154,0.2008
+4 named candidates,5,MaxSim,39,0.9015
+4 named candidates,5,RiskFit rho=0.8,55,0.0905
+4 named candidates,5,kNN (frozen),82,0.008
+4 named candidates,5,Decisions + exemplar,154,0.0
+4 named candidates,10,MaxSim,74,0.7435
+4 named candidates,10,RiskFit rho=0.8,85,0.2497
+4 named candidates,10,kNN (frozen),162,0.0037
+4 named candidates,10,Decisions + exemplar,154,0.003
+4 named candidates,20,MaxSim,144,0.4597
+4 named candidates,20,RiskFit rho=0.8,145,0.2352
+4 named candidates,20,kNN (frozen),322,0.0005
+4 named candidates,20,Decisions + exemplar,154,0.3045

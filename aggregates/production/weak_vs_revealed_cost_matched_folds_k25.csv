@@ -1,0 +1,9 @@
+method,n_folds,arm,k_pct,caught,n_mal,misses,false_malicious,n_nonmal,cost_c5,cost_c10,cost_c20,breakeven_c_weak_vs_human_only,breakeven_note
+RiskFit,8,weak,25,57,67,10,546,1301,596,646,746,27.28,"weak cheaper when c > c* (weak has fewer misses, more false malicious)"
+RiskFit,8,revealed labels only,25,39,67,28,55,1301,195,335,615,27.28,"weak cheaper when c > c* (weak has fewer misses, more false malicious)"
+RiskFit,8,weak,25,57,67,10,546,1301,596,646,746,27.28,"weak cheaper when c > c* (weak has fewer misses, more false malicious)"
+RiskFit,8,revealed labels only,25,39,67,28,55,1301,195,335,615,27.28,"weak cheaper when c > c* (weak has fewer misses, more false malicious)"
+CE,8,weak,25,56,67,11,437,1301,492,547,657,19.69,"weak cheaper when c > c* (weak has fewer misses, more false malicious)"
+CE,8,revealed labels only,25,43,67,24,181,1301,301,421,661,19.69,"weak cheaper when c > c* (weak has fewer misses, more false malicious)"
+CE,8,weak,25,56,67,11,437,1301,492,547,657,19.69,"weak cheaper when c > c* (weak has fewer misses, more false malicious)"
+CE,8,revealed labels only,25,43,67,24,181,1301,301,421,661,19.69,"weak cheaper when c > c* (weak has fewer misses, more false malicious)"

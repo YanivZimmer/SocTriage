@@ -1,0 +1,33 @@
+method,scope,misses,false_esc,automated,n_alerts,automated_share,misses_ci95_low,misses_ci95_high,cost_c10
+RiskFit,all,6,26,1111,1492,0.7446,2,11,86
+RiskFit rho=0.8,all,5,21,1122,1492,0.752,1,10,71
+CE,all,9,8,1163,1492,0.7795,4,15,98
+MaxSim,all,7,4,1174,1492,0.7869,2,13,74
+kNN (frozen),all,15,3,1260,1492,0.8445,8,23,153
+LightGBM,all,14,4,1156,1492,0.7748,7,22,144
+Decisions zero-shot,all,1,967,1229,1492,0.8237,0,3,977
+Decisions + exemplar,all,0,155,1219,1492,0.817,0,0,155
+RiskFit,A,0,,,,0.6772,,,
+RiskFit rho=0.8,A,0,,,,0.7015,,,
+CE,A,1,,,,0.7476,,,
+MaxSim,A,1,,,,0.7791,,,
+kNN (frozen),A,1,,,,0.8786,,,
+LightGBM,A,2,,,,0.7209,,,
+Decisions zero-shot,A,0,,,,,,,
+Decisions + exemplar,A,0,,,,,,,
+RiskFit,B,6,,,,0.7468,,,
+RiskFit rho=0.8,B,5,,,,0.7553,,,
+CE,B,8,,,,0.7793,,,
+MaxSim,B,5,,,,0.7822,,,
+kNN (frozen),B,14,,,,0.7709,,,
+LightGBM,B,12,,,,0.7836,,,
+Decisions zero-shot,B,0,,,,,,,
+Decisions + exemplar,B,0,,,,,,,
+RiskFit,C,0,,,,0.815,,,
+RiskFit rho=0.8,C,0,,,,0.8016,,,
+CE,C,0,,,,0.815,,,
+MaxSim,C,1,,,,0.8043,,,
+kNN (frozen),C,0,,,,0.9464,,,
+LightGBM,C,0,,,,0.8177,,,
+Decisions zero-shot,C,1,,,,,,,
+Decisions + exemplar,C,0,,,,,,,

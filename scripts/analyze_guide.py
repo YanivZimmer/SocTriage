@@ -1,22 +1,31 @@
 #!/usr/bin/env python3
-"""All GUIDE statistics in the paper, from local-model predictions and the released hosted-model outputs.
+"""All GUIDE statistics in the paper, from local-model predictions and the released per-prompt outputs.
 
 Inputs (local files only, no network):
-  --predictions  directory with riskfit/, ce/, lightgbm/ subdirectories of org_<id>.jsonl (scripts/train_guide.py)
-  --hosted       directory with decisions_guide_per_prompt.csv, jev_guide_per_prompt.csv, opus_guide_per_prompt.csv
-                 (default: data/guide_outputs, the released outputs)
-  --splits       the splits/ directory (prompt ids, labels and the exemplars' training labels)
-Methods: RiskFit, CE, LightGBM; Decisions / Jev / Opus, each zero-shot and with one exemplar. Opus scored test
-prompts only, so the deployable gate and validation-tuned thresholds are n/a for it.
+  --predictions   directory with riskfit/, ce/, lightgbm/ subdirectories of org_<id>.jsonl (scripts/train_guide.py)
+  --hosted        directory with decisions_guide_per_prompt.csv, jev_guide_per_prompt.csv, opus_guide_per_prompt.csv
+                  (default: data/guide_outputs, the released outputs)
+  --five-exemplar Decisions and Jev with five retrieved exemplars (default: the released
+                  data/guide_outputs/decisions_jev_5ex_guide_per_prompt.csv; "none" skips both conditions)
+  --open-llm      CyberSecQwen-4B zero-shot (default: the released
+                  data/guide_outputs/cybersecqwen4b_zeroshot_guide_per_prompt.csv, from scripts/run_cybersecqwen.py;
+                  "none" skips it)
+  --splits        the splits/ directory (prompt ids, labels and the exemplars' training labels)
+Methods: RiskFit, CE, LightGBM; Decisions / Jev / Opus, each zero-shot and with one exemplar; Decisions and Jev
+with five exemplars; CyberSecQwen-4B zero-shot. Opus scored test prompts only, so the deployable gate and
+validation-tuned thresholds are n/a for it. Adding the five-exemplar and CyberSecQwen conditions does not change
+any number of the nine original methods (the bootstrap resamples prompt positions, independently of the methods);
+only the "dominated_by" labels of the frontier table can name the new methods.
 
 Outputs (--out): full_coverage, matched_fpr, auc, gate80, gate80_ties, frontier_cost, bootstrap_gate80,
 bootstrap_cost_crossovers, bootstrap_min_cost_probability, paired_tests, exemplar_diagnostics,
-exemplar_following_test, hosted_agreement, crossovers_reweighted (.csv), summary.json, and paper_numbers.txt
-(the GUIDE numbers quoted in the paper, with where they appear).
+exemplar_following_test, neighbor_vote, hosted_agreement, crossovers_reweighted (.csv), summary.json, and
+paper_numbers.txt (every GUIDE number quoted in the paper, grouped by the table, figure or paragraph that uses it).
 
 Score conventions: local models rank the gate by max class probability and use p(malicious) for ranking;
 decision models gate on their own verdict confidence and use the predicate probability (q2; q1 = choice
-probability as a sensitivity); Opus gates on its verbalized confidence and ranks by its p_malicious.
+probability as a sensitivity); Opus gates on its verbalized confidence and ranks by its p_malicious;
+CyberSecQwen-4B gates on its largest label probability and ranks by p(malicious).
 Exact Wilcoxon p-values with zero differences need scipy >= 1.16.
 
 Usage: python scripts/analyze_guide.py --predictions data/predictions --splits data/guide_splits/splits --out results/guide
@@ -46,9 +55,13 @@ C2X = {"false_positive": LABELS[0], "benign": LABELS[1], "malicious": LABELS[2],
 LOCAL = {"RiskFit": "riskfit", "CE": "ce", "LightGBM": "lightgbm"}
 DZS, DEX, JZS, JEX, OZS, OEX = ("Decisions zero-shot", "Decisions + exemplar", "Jev zero-shot", "Jev + exemplar",
                                 "Opus zero-shot", "Opus + exemplar")
+D5, J5, CSQ = "Decisions + 5 exemplars", "Jev + 5 exemplars", "CyberSecQwen-4B zero-shot"
 DECISION = [DZS, DEX, JZS, JEX]
 OPUS = [OZS, OEX]
-HOSTED = DECISION + OPUS
+FIVE = [D5, J5]           # follow-up conditions, optional (--five-exemplar)
+OPEN = [CSQ]              # open LLM run locally, optional (--open-llm); compared like a hosted model
+BASE9 = list(LOCAL) + DECISION + OPUS  # the original nine methods (pools named "all 9 methods")
+HOSTED = DECISION + OPUS + FIVE + OPEN  # every non-trained comparator (lists are pruned in place in main())
 METHODS = list(LOCAL) + HOSTED
 HAS_VAL = [m for m in METHODS if m not in OPUS]
 NA_VAL = "n/a: no validation scores (test prompts only)"
@@ -67,6 +80,8 @@ def parse_args():
     ap = argparse.ArgumentParser()
     ap.add_argument("--predictions", type=Path, required=True)
     ap.add_argument("--hosted", type=Path, default=ROOT / "data" / "guide_outputs")
+    ap.add_argument("--five-exemplar", default=str(ROOT / "data" / "guide_outputs" / "decisions_jev_5ex_guide_per_prompt.csv"))
+    ap.add_argument("--open-llm", default=str(ROOT / "data" / "guide_outputs" / "cybersecqwen4b_zeroshot_guide_per_prompt.csv"))
     ap.add_argument("--splits", type=Path, required=True)
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--orgs", help="comma-separated subset (smoke runs); default: all 12")
@@ -125,6 +140,28 @@ def load(a):
                 te.append({"id": i, "y": y, "pred": C2X[r["verdict"]] if ok else "unresolved", "probs": [0.0, 0.0, pm],
                            "conf": float(r["confidence"]) if ok else 0.0, "q2": pm})
             data[(m, o)] = {"test": te, "val": []}
+    five = {}
+    if FIVE:  # Decisions and Jev with five exemplars: loaded exactly like the one-exemplar CSVs above
+        for r in csv.DictReader(Path(a.five_exemplar).open(newline="")):
+            if r["org"] not in orgs:
+                continue
+            five[(r["split"], r["prompt_id"])] = r
+            for m, pfx in ((D5, "dec5"), (J5, "jev5")):
+                ok = r[f"{pfx}_verdict"] not in ("", None)
+                rec = {"id": r["prompt_id"], "y": C2X[r["label"]], "pred": C2X[r[f"{pfx}_verdict"]] if ok else "unresolved",
+                       "probs": [fnum(r[f"{pfx}_p_fp"]) or 0.0, fnum(r[f"{pfx}_p_benign"]) or 0.0,
+                                 fnum(r[f"{pfx}_p_mal_q1"]) or 0.0] if ok else [0.0] * 3,
+                       "conf": fnum(r[f"{pfx}_confidence"]) if ok else 0.0, "q2": fnum(r[f"{pfx}_p_mal_q2"]) if ok else 0.0}
+                data.setdefault((m, r["org"]), {"test": [], "val": []})[r["split"]].append(rec)
+    if OPEN:  # CyberSecQwen-4B: softmax over the three verdict labels' summed log-probabilities
+        for r in csv.DictReader(Path(a.open_llm).open(newline="")):
+            if r["org"] not in orgs:
+                continue
+            ps = [float(r["p_fp"]), float(r["p_benign"]), float(r["p_malicious"])]
+            assert abs(sum(ps) - 1) < 1e-6 and float(r["confidence"]) == max(ps), r["id"]
+            rec = {"id": r["id"], "y": C2X[r["y"]], "pred": C2X[r["verdict"]], "probs": ps,
+                   "conf": float(r["confidence"]), "q2": ps[2]}
+            data.setdefault((CSQ, r["org"]), {"test": [], "val": []})[r["split"]].append(rec)
     for o in orgs:  # integrity: every method has exactly the split's prompts and labels
         for s in ("test", "val"):
             for m in METHODS:
@@ -136,13 +173,19 @@ def load(a):
         for o in orgs:
             order = {r["alert_id"]: k for k, r in enumerate(splits[o]["test"])}
             data[(m, o)]["test"].sort(key=lambda r: order[r["id"]])
-    return orgs, splits, data
+    return orgs, splits, data, five
 
 
 def main() -> int:
     a = parse_args()
     a.out.mkdir(parents=True, exist_ok=True)
-    orgs, splits, DATA = load(a)
+    for path, group in ((a.five_exemplar, FIVE), (a.open_llm, OPEN)):  # optional conditions: prune the lists in place
+        if path.lower() == "none" or not Path(path).exists():
+            for m in list(group):
+                for lst in (group, HOSTED, METHODS, HAS_VAL):
+                    if m in lst:
+                        lst.remove(m)
+    orgs, splits, DATA, FIVE_ROWS = load(a)
     nb = a.n_boot
 
     def write(name, rows):
@@ -171,7 +214,7 @@ def main() -> int:
     write("full_coverage.csv", fc_rows)
 
     # --------------------------------------------------------------------- matched FPR + AUC (RQ1 thresholds)
-    SCORES = {m: (("p_mal", "q2"),) if m in LOCAL else ((("p_malicious", "q2"),) if m in OPUS else (("q1", "q1"), ("q2", "q2"))) for m in METHODS}
+    SCORES = {m: (("p_mal", "q2"),) if m in LOCAL else ((("p_malicious", "q2"),) if m in OPUS + OPEN else (("q1", "q1"), ("q2", "q2"))) for m in METHODS}
 
     def score(m, r, key):
         return (r["probs"][2] if key == "q1" else r["q2"]) if m in HOSTED else r["probs"][2]
@@ -293,7 +336,13 @@ def main() -> int:
                             "point_note": f"attained by {', '.join(arg)}" if arg else "", **E.envelope_bootstrap(Ml, Fl, Md, Fd, nb)})
         pools = []
         if kind == "a":
-            pools.append(("all 9 methods", METHODS))
+            pools.append(("all 9 methods", BASE9))
+            if FIVE:
+                pools.append(("all 9 + both five-exemplar conditions", BASE9 + FIVE))
+            if OPEN:
+                pools.append(("all 9 + CyberSecQwen-4B", BASE9 + OPEN))
+            if FIVE and OPEN:
+                pools.append(("all 12 methods", METHODS))
         pools += [("3 local + 4 decision-model conditions", list(LOCAL) + DECISION),
                   ("3 local + both Decisions", list(LOCAL) + [DZS, DEX])]
         pools += [(f"3 local + {h} only", list(LOCAL) + [h]) for h in HOSTED if h in GM[kind]]
@@ -323,7 +372,7 @@ def main() -> int:
         out = []
         for o in orgs:
             if metric.startswith("matched_fpr_recall"):
-                sname = "p_mal" if m in LOCAL else ("p_malicious" if m in OPUS else dscore)
+                sname = "p_mal" if m in LOCAL else ("p_malicious" if m in OPUS + OPEN else dscore)
                 sel = "validation-tuned" if metric == "matched_fpr_recall" else "TEST-tuned oracle upper bound"
                 out.append(MF[(m, sname, "RiskFit default FPR", sel)][o]["recall"])
             elif metric == "gate_miss_rate":
@@ -387,6 +436,16 @@ def main() -> int:
                                 ("Opus vs Decisions (same condition)", [(OEX, DEX), (OZS, DZS)])):
             pt += family(set_name, "primary: gate (a) miss/FE rates", comps, ("gate_miss_rate", "gate_fe_rate"), "a", "q2")
             pt += family(set_name, "sensitivity: TEST-tuned matched-FPR recall", comps, ("matched_fpr_recall_test_oracle",), "a", "q2")
+        # follow-up conditions: separate Holm families, so the families above are unchanged
+        extra = []
+        if FIVE:
+            extra += [("Decisions + 5 exemplars vs local", [(D5, "RiskFit"), (D5, "CE")]),
+                      ("Jev + 5 exemplars vs local", [(J5, "RiskFit"), (J5, "CE")]),
+                      ("5 exemplars vs 1 exemplar (same model)", [(D5, DEX), (J5, JEX)])]
+        if OPEN:
+            extra += [("CyberSecQwen-4B vs local", [(CSQ, "RiskFit"), (CSQ, "CE")])]
+        for set_name, comps in extra:
+            pt += family(set_name, "primary: gate (a), hosted q2", comps, M3, "a", "q2")
         write("paired_tests.csv", pt)
 
     # --------------------------------------------------------------------- exemplar use and hosted agreement
@@ -417,7 +476,35 @@ def main() -> int:
                            "exemplar_following_rate_binary_mal": sum(ism(C2X[pp[k][f"{pfx}_verdict"]]) == ism(exl[k]) for k in ok) / len(ok) if ok else None,
                            "n_exemplar_label_wrong": len(wrong),
                            "follows_wrong_exemplar_rate_3class": sum(C2X[pp[k][f"{pfx}_verdict"]] == exl[k] for k in wrong) / len(wrong) if wrong else None})
+        if FIVE:  # five exemplars: agreement with the most similar one (= the one-exemplar condition's exemplar)
+            for name, pfx in (("decisions", "dec5"), ("jev", "jev5")):
+                assert all(FIVE_ROWS[k]["ex1_prompt_id"] == ppd[k]["exemplar_prompt_id"] for k in keys), "top-1 exemplar differs"
+                ok = [k for k in keys if FIVE_ROWS[k][f"{pfx}_verdict"]]
+                v = {k: C2X[FIVE_ROWS[k][f"{pfx}_verdict"]] for k in ok}
+                wrong = [k for k in ok if exl[k] != tl[k]]
+                fr.append({"org": o, "model": name, "condition": "5ex (vs most similar exemplar)", "n_resolved": len(ok),
+                           "exemplar_label_correct_rate": sum(exl[k] == tl[k] for k in keys) / len(keys),
+                           "exemplar_following_rate_3class": sum(v[k] == exl[k] for k in ok) / len(ok) if ok else None,
+                           "exemplar_following_rate_binary_mal": sum(ism(v[k]) == ism(exl[k]) for k in ok) / len(ok) if ok else None,
+                           "n_exemplar_label_wrong": len(wrong),
+                           "follows_wrong_exemplar_rate_3class": sum(v[k] == exl[k] for k in wrong) / len(wrong) if wrong else None})
     write("exemplar_following_test.csv", fr)
+
+    # a vote over labeled neighbors, no model: the most similar training prompt's label, and the binary majority of
+    # the five most similar (malicious iff >= 3 of 5); exemplar ids come from the five-exemplar file
+    nv = []
+    if FIVE:
+        for o in orgs + ["pooled"]:
+            keys = [k for k in FIVE_ROWS if k[0] == "test" and (o == "pooled" or FIVE_ROWS[k]["org"] == o)]
+            tl = {k: C2X[FIVE_ROWS[k]["label"]] for k in keys}
+            ex5 = {k: [lab[FIVE_ROWS[k][f"ex{j}_prompt_id"]] for j in range(1, 6)] for k in keys}
+            for rule, flag in (("top-1 neighbor label", lambda k: ism(ex5[k][0])),
+                               ("majority of 5 neighbors (>= 3 malicious)", lambda k: sum(ism(x) for x in ex5[k]) >= 3)):
+                cau = sum(flag(k) for k in keys if ism(tl[k])); nm = sum(ism(tl[k]) for k in keys)
+                fm = sum(flag(k) for k in keys if not ism(tl[k])); nn = len(keys) - nm
+                nv.append({"org": o, "rule": rule, "caught": cau, "n_mal": nm, "false_mal": fm, "n_nonmal": nn,
+                           **{f"cost_c{c}": c * (nm - cau) + fm for c in CS}})
+        write("neighbor_vote.csv", nv)
 
     ag = []
     for na, nb_, pa_, pb_ in (("decisions", "jev", rows_h["decisions"], rows_h["jev"]), ("opus", "jev", ppo, rows_h["jev"]),
@@ -490,56 +577,139 @@ def main() -> int:
     def g(kind, m):
         p = Gt[(kind, m)]["pooled"]; return f"{p['misses']}/{p['false_esc']}"
 
-    def mfp(m, sname):
-        r = [x for x in mf_rows if x["method"] == m and x["score"] == sname and x["org"] == "pooled"
-             and x["target"] == "RiskFit default FPR" and x["selection"] == "validation-tuned"]
-        return f"{r[0]['tp']}/{r[0]['fp']}" if r else "n/a"
+    def gcost(kind, m, c=10):
+        p = Gt[(kind, m)]["pooled"]; return c * p["misses"] + p["false_esc"]
 
-    def auc_mean(m, sname):
-        return next(r["mean"] for r in auc_rows if r["method"] == m and r["score"] == sname and r.get("metric") == "roc_auc")
+    def sname_of(m):
+        return "p_mal" if m in LOCAL else ("p_malicious" if m in OPUS + OPEN else "q2")
 
-    def cx(pair_prefix, kind="a"):
-        r = next(x for x in cx_rows if x["gate"] == GATES[kind] and x["pair"].startswith(pair_prefix))
-        return r["point_c_star"] if r["point_region_local_cheaper"] != "always" else math.inf
+    def mf(m, target, sname=None):
+        r = [x for x in mf_rows if x["method"] == m and x["score"] == (sname or sname_of(m)) and x["org"] == "pooled"
+             and x["target"] == target and x["selection"] == "validation-tuned"]
+        return r[0] if r else None
 
-    lines = [f"GUIDE organizations: {len(orgs)}; test prompts {S['n_test_prompts']} ({nm_g} malicious, {nn_g} non-malicious)", "",
-             "RQ1 default verdicts, caught / false malicious (Results, RQ1: Default operating points):"]
-    for m in METHODS:
-        p = S["full_coverage"][m]; lines.append(f"  {m:22s} {p['caught']}/{p['false_mal']}  kappa {p['kappa']:.3f}")
-    lines += ["", "RQ1 thresholds at RiskFit's default FPR, validation-tuned, caught / false (RQ1: Thresholds and ranking):"]
-    lines += [f"  {m:22s} {mfp(m, 'p_mal' if m in LOCAL else 'q2')}" for m in list(LOCAL) + DECISION]
-    lines += ["", "Mean per-organization ROC-AUC of p(malicious):"]
-    lines += [f"  {m:22s} {auc_mean(m, 'p_mal' if m in LOCAL else ('p_malicious' if m in OPUS else 'q2')):.3f}" for m in METHODS]
-    lines += ["", "RQ2 80% test-quantile gate, misses / false escalations (RQ2: Gating on public data):"]
-    lines += [f"  {m:22s} {g('a', m)}   cost at c=10: {10 * Gt[('a', m)]['pooled']['misses'] + Gt[('a', m)]['pooled']['false_esc']}" for m in METHODS]
-    lines += ["", "Deployable gate, misses / false escalations:"] + [f"  {m:22s} {g('b', m)}" for m in HAS_VAL]
-    lines += ["", "Gate ties at the cutoff (Opus): " + ", ".join(
-        f"{r['method']}: {r['n_tied_at_tau']} tied, misses {r['misses_min']}-{r['misses_max']}" for r in t_rows
-        if r["scope"] == "pooled" and r["method"] in OPUS)]
-    allpool = [r for r in mc_rows if r["gate"] == GATES["a"] and r["candidate_pool"] == "all 9 methods"]
-    for c in (10, 20):
-        share = sum(r["prob_min_cost_ties_split"] for r in allpool if r["c"] == c and r["method"] in LOCAL)
-        lines.append(f"P(a local model is cheapest among all 9) at c={c}: {share:.4f}")
-    lines += ["", "Crossovers c* (Table: crossover; GUIDE column, test-quantile gate):"]
-    for h in (DEX, DZS, JEX, JZS, OEX, OZS):
-        lines.append(f"  vs {h:22s} RiskFit {cx('RiskFit vs ' + h)}, CE {cx('CE vs ' + h)}, LightGBM {cx('LightGBM vs ' + h)}, "
-                     f"best local {cx('best local (envelope of RiskFit/CE/LightGBM) vs ' + h)}")
-    lines.append(f"  deployable gate, best local vs {DEX}: {cx('best local (envelope of RiskFit/CE/LightGBM) vs ' + DEX, 'b')}")
-    lines += ["", "Reweighted to the production class ratio (parentheses in Table: crossover):"]
-    for r in rw_rows:
-        if r["analysis"].startswith("GUIDE reweighted") and r["hosted"] in (DEX, DZS):
-            lines.append(f"  {r['local']:10s} vs {r['hosted']:22s} c* {r['c_star']:.1f}  [{r['boot_lo']:.0f}, {r['boot_hi']}]")
-    lines += ["", "Shares of bootstrap replicates in which the local model is cheaper at every c (weakly dominates):"]
-    lines += [f"  {k}: {v:.3f}" for k, v in S["share_local_weakly_dominates"].items() if k.endswith(("exemplar",))]
+    def auc_ms(m):
+        r = next(r for r in auc_rows if r["method"] == m and r["score"] == sname_of(m) and r.get("metric") == "roc_auc")
+        return r["mean"], r["sd"]
+
+    def cxr(pair, kind="a"):
+        return next(x for x in cx_rows if x["gate"] == GATES[kind] and x["pair"] == pair)
+
+    def cx(pair, kind="a"):
+        r = cxr(pair, kind)
+        return math.inf if r["point_region_local_cheaper"] == "always" else r["point_c_star"]
+
+    def fmt_c(v):
+        return "inf" if v is None or v == math.inf else f"{v:.1f}"
+
+    def bci(m, kind="a"):
+        r = next(x for x in bg_rows if x["gate"] == GATES[kind] and x["method"] == m)
+        return f"{r['misses_ci95_low']:.0f}-{r['misses_ci95_high']:.0f}"
+
+    def pool_share(pool, c, who=None):
+        rows = [r for r in mc_rows if r["gate"] == GATES["a"] and r["candidate_pool"] == pool and r["c"] == c]
+        return sum(r["prob_min_cost_ties_split"] for r in rows if (r["method"] in LOCAL if who is None else r["method"] == who))
+
+    ENV = "best local (envelope of RiskFit/CE/LightGBM) vs "
+    shown = [m for m in METHODS]
+    lines = [f"GUIDE organizations: {len(orgs)}; test prompts {S['n_test_prompts']} ({nm_g} malicious, {nn_g} non-malicious)",
+             "Every line names the place in the paper (draft fix20) that quotes the number.", ""]
+
+    lines += ["Figure 2 (left panel) and RQ1 'Default and tuned operating points': default verdicts, caught / false escalations"]
+    for m in shown:
+        p = S["full_coverage"][m]
+        lines.append(f"  {m:28s} {p['caught']}/{p['false_mal']}  kappa {p['kappa']:.3f}  cost c=10 {10 * (p['n_mal'] - p['caught']) + p['false_mal']}")
+    hz = [S["full_coverage"][m] for m in HOSTED if m not in OPEN]
+    lines.append(f"  hosted models: caught {min(p['caught'] for p in hz)}-{max(p['caught'] for p in hz)}, "
+                 f"false escalations {min(p['false_mal'] for p in hz)}-{max(p['false_mal'] for p in hz)}")
+    if OPEN:
+        nmal = sum(ism(r["pred"]) for o in orgs for r in DATA[(CSQ, o)]["test"])
+        lines.append(f"  CyberSecQwen-4B labeled {nmal} of {S['n_test_prompts']} test prompts malicious")
+
+    targets = [("@RiskFit", "RiskFit default FPR"), ("@1%", "FPR 1%"), ("@2%", "FPR 2%"), ("@5%", "FPR 5%")]
+    t3 = [m for m in list(LOCAL) + [DEX, D5, JEX, J5] if m in METHODS]
+    lines += ["", "Table 3 (tab:threshold): validation-tuned per-organization threshold, caught / false escalations "
+                  "(hosted: predicate probability); * = lowest cost 10*misses+FE in the column"]
+    best = {}
+    for col, t in targets:
+        costs = {m: 10 * (mf(m, t)["n_mal"] - mf(m, t)["tp"]) + mf(m, t)["fp"] for m in t3}
+        best[col] = min(costs, key=costs.get)
+    for m in t3:
+        cells = []
+        for col, t in targets:
+            r = mf(m, t)
+            cells.append(f"{col} {r['tp']}/{r['fp']}{'*' if best[col] == m else ''}")
+        lines.append(f"  {m:28s} " + "   ".join(cells))
+    lines.append("  RQ1 text: cost at c=10 at RiskFit's FPR: " + ", ".join(
+        f"{m} {10 * (mf(m, 'RiskFit default FPR')['n_mal'] - mf(m, 'RiskFit default FPR')['tp']) + mf(m, 'RiskFit default FPR')['fp']}"
+        for m in t3))
+    lines.append("  zero-shot conditions at RiskFit's FPR (not in the table): " + ", ".join(
+        f"{m} {mf(m, 'RiskFit default FPR')['tp']}/{mf(m, 'RiskFit default FPR')['fp']}" for m in (DZS, JZS)))
+
+    lines += ["", "Table 4 (tab:guidegate) and RQ2 'Confidence gating': 80% test-quantile gate"]
+    lines.append(f"  {'method':28s} {'miss/FE':>9s}  cost c=10  c* vs RiskFit  c* vs CE   ROC-AUC mean+-sd over orgs")
+    for m in shown:
+        mu, sd = auc_ms(m)
+        cs_ = ("--", "--") if m in LOCAL else (fmt_c(cx(f"RiskFit vs {m}")), fmt_c(cx(f"CE vs {m}")))
+        lines.append(f"  {m:28s} {g('a', m):>9s}  {gcost('a', m):9d}  {cs_[0]:>12s}  {cs_[1]:>8s}   {mu:.3f} +- {sd:.3f}")
+    lines.append(f"  cost at c=5/10/20: " + "; ".join(f"{m} {gcost('a', m, 5)}/{gcost('a', m, 10)}/{gcost('a', m, 20)}" for m in LOCAL))
+    for c in (5, 10, 20):
+        lines.append(f"  cheapest point estimate at c={c}: {min(METHODS, key=lambda m: gcost('a', m, c))}")
+    lines.append(f"  share of bootstrap replicates in which each is cheapest among all 9 at c=10: RiskFit "
+                 f"{pool_share('all 9 methods', 10, 'RiskFit'):.4f}, CE {pool_share('all 9 methods', 10, 'CE'):.4f}")
+    for pool in ("all 9 methods", "all 9 + both five-exemplar conditions", "all 9 + CyberSecQwen-4B", "all 12 methods"):
+        if any(r["candidate_pool"] == pool for r in mc_rows):
+            lines.append(f"  P(a local model is cheapest), pool '{pool}': c=10 {pool_share(pool, 10):.4f}, c=20 {pool_share(pool, 20):.4f}")
+    for m in OPUS[1:]:
+        lines.append(f"  RiskFit / CE weakly dominate {m} (fewer misses and FE) in {S['share_local_weakly_dominates']['RiskFit vs ' + m]:.3f} / "
+                     f"{S['share_local_weakly_dominates']['CE vs ' + m]:.3f} of replicates")
+    lines.append(f"  95% bootstrap interval of gate misses: {DEX} {g('a', DEX).split('/')[0]} [{bci(DEX)}], RiskFit "
+                 f"{g('a', 'RiskFit').split('/')[0]} [{bci('RiskFit')}]")
+    fe_ratio = Gt[("a", DEX)]["pooled"]["false_esc"] / Gt[("a", "RiskFit")]["pooled"]["false_esc"]
+    lines.append(f"  {DEX} false escalations / RiskFit's: {fe_ratio:.1f}x")
+    r = cxr(f"RiskFit vs {DEX}")
+    lines.append(f"  RiskFit vs {DEX}: c* {fmt_c(cx(f'RiskFit vs {DEX}'))}, 95% interval {r['boot_full_p2.5 (inf=local always cheaper)']:.0f} "
+                 f"to {fmt_c(r['boot_full_p97.5'])}")
+    lines.append(f"  deployable gate, best local vs {DEX}: c* {fmt_c(cx(ENV + DEX, 'b'))}")
+    lines += ["  deployable gate, misses / false escalations: " + "; ".join(f"{m} {g('b', m)}" for m in HAS_VAL)]
+
+    lines += ["", "Figure 3 (left panel) and its caption: crossovers c* below which the local model is cheaper (test-quantile gate)"]
+    for h in HOSTED:
+        lines.append(f"  vs {h:28s} RiskFit {fmt_c(cx('RiskFit vs ' + h))}, CE {fmt_c(cx('CE vs ' + h))}, "
+                     f"LightGBM {fmt_c(cx('LightGBM vs ' + h))}, best local {fmt_c(cx(ENV + h))}")
+    lines += ["  reweighted to the production class ratio (73:1419):"]
+    for rr in rw_rows:
+        if rr["analysis"].startswith("GUIDE reweighted") and rr["hosted"] in (DEX, DZS):
+            lines.append(f"    {rr['local']:10s} vs {rr['hosted']:22s} c* {rr['c_star']:.1f}  [{rr['boot_lo']:.0f}, {rr['boot_hi']}]")
+
     ef = {(r["model"], r["condition"]): r for r in fr if r["org"] == "pooled"}
-    lines += ["", f"Exemplar label correct for {ef[('decisions', 'ex')]['exemplar_label_correct_rate']:.2f} of test prompts; "
-              f"followed by Decisions {ef[('decisions', 'ex')]['exemplar_following_rate_3class']:.2f}, "
-              f"Jev {ef[('jev', 'ex')]['exemplar_following_rate_3class']:.2f}, Opus {ef[('opus', 'ex')]['exemplar_following_rate_3class']:.2f}"]
+    lines += ["", "RQ2 'Exemplars':",
+              f"  exemplar label correct for {ef[('decisions', 'ex')]['exemplar_label_correct_rate']:.3f} of test prompts",
+              "  verdict equals the (most similar) exemplar's label, 3-class: " + ", ".join(
+                  f"{mm} {cond} {ef[(mm, cond)]['exemplar_following_rate_3class']:.3f}" for (mm, cond) in ef)]
+    if FIVE:
+        for m1, m5 in ((DEX, D5), (JEX, J5)):
+            a1, a5 = Gt[("a", m1)]["pooled"]["false_esc"], Gt[("a", m5)]["pooled"]["false_esc"]
+            lines.append(f"  {m5}: gate false escalations {a1} -> {a5} ({100 * (a1 - a5) / a1:.0f}% fewer)")
+        nb5 = {(r["org"], r["rule"]): r for r in nv}
+        for rule in ("top-1 neighbor label", "majority of 5 neighbors (>= 3 malicious)"):
+            x = nb5[("pooled", rule)]
+            lines.append(f"  neighbor vote, {rule}: caught {x['caught']} with {x['false_mal']} false escalations, cost c=10 {x['cost_c10']}")
+        lines.append("  for comparison, default verdicts at c=10: " + ", ".join(
+            f"{m} {10 * (S['full_coverage'][m]['n_mal'] - S['full_coverage'][m]['caught']) + S['full_coverage'][m]['false_mal']}" for m in ("RiskFit", "CE")))
+
+    ha = {(r["pair"], r["condition"]): r for r in ag}
+    lines += ["", "Limitations ('Where hosted models are competitive'):",
+              f"  Spearman correlation of the two decision models' predicate scores, with exemplar: "
+              f"{ha[('decisions vs jev', '+ exemplar')]['spearman_p_malicious']:.3f}",
+              "  Opus gate ties at the cutoff: " + ", ".join(
+                  f"{r['method']}: misses {r['misses_point_idbytes']} (tie order by prompt id), range {r['misses_min']}-{r['misses_max']}, "
+                  f"expected {r['misses_expected_random_ties']:.1f}" for r in t_rows if r["scope"] == "pooled" and r["method"] in OPUS)]
     if pt:
-        lines += ["", "Paired per-organization tests (Wilcoxon, Holm-adjusted p):"]
+        lines += ["", "Paired per-organization tests (Wilcoxon, Holm-adjusted within each family):"]
         for r in pt:
             if r["family"].startswith(("RQ1", "primary")) and r["metric"] in ("mal_recall", "matched_val_fpr_recall", "matched_fpr_recall", "gate_fe_rate"):
-                lines.append(f"  {r['set']:34s} {r['comparison']:30s} {r['metric']:20s} mean diff {r['mean_diff']:+.3f} "
+                lines.append(f"  {r['set']:38s} {r['comparison']:42s} {r['metric']:22s} mean diff {r['mean_diff']:+.3f} "
                              f"({r['n_pos']}/{r['n_neg']}/{r['n_tie']})  p_holm {r['wilcoxon_p_holm']:.3f}")
     (a.out / "paper_numbers.txt").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))

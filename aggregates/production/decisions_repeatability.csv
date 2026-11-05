@@ -1,0 +1,7 @@
+tenant,condition,agreement_with_main_run,all3_agree_rate,mean_p_malicious_range,mean_pairwise_agreement,n_alerts,unresolved
+A,with_exemplar,1,1,0,1,100,0
+A,zero_shot,1,1,0,1,100,0
+B,with_exemplar,1,1,0,1,100,0
+B,zero_shot,1,1,0,1,100,0
+C,with_exemplar,1,1,0,1,100,0
+C,zero_shot,1,1,0,1,100,0

@@ -1,0 +1,43 @@
+method,score,tenant,roc_auc_mean_over_folds,pr_auc_mean_over_folds
+RiskFit,p(malicious),A,0.956,0.7044
+RiskFit rho=0.8,p(malicious),A,0.9564,0.7053
+RiskFit lambda=4,p(malicious),A,0.9524,0.6725
+CE,p(malicious),A,0.9609,0.6804
+Focal-Tversky,p(malicious),A,0.9582,0.7321
+MaxSim,p(malicious),A,0.9449,0.6651
+kNN (frozen),p(malicious),A,0.9552,0.7672
+LightGBM,p(malicious),A,0.8971,0.6964
+SetFit-LoRA,p(malicious),A,0.966,0.6326
+Qwen3-LoRA,p(malicious),A,0.8984,0.5766
+Decisions zero-shot,choice p(malicious),A,0.912,0.4296
+Decisions zero-shot,predicate p(malicious),A,0.8148,0.4896
+Decisions + exemplar,choice p(malicious),A,0.9723,0.6898
+Decisions + exemplar,predicate p(malicious),A,0.9455,0.7408
+RiskFit,p(malicious),B,0.9054,0.5764
+RiskFit rho=0.8,p(malicious),B,0.9265,0.6781
+RiskFit lambda=4,p(malicious),B,0.9289,0.6293
+CE,p(malicious),B,0.9264,0.683
+Focal-Tversky,p(malicious),B,0.9242,0.6181
+MaxSim,p(malicious),B,0.9161,0.5932
+kNN (frozen),p(malicious),B,0.8524,0.6378
+LightGBM,p(malicious),B,0.9209,0.6351
+SetFit-LoRA,p(malicious),B,0.9511,0.6203
+Qwen3-LoRA,p(malicious),B,0.9129,0.7046
+Decisions zero-shot,choice p(malicious),B,0.7879,0.1629
+Decisions zero-shot,predicate p(malicious),B,0.8563,0.2069
+Decisions + exemplar,choice p(malicious),B,0.9566,0.5886
+Decisions + exemplar,predicate p(malicious),B,0.9295,0.6639
+RiskFit,p(malicious),C,0.9929,0.9519
+RiskFit rho=0.8,p(malicious),C,0.992,0.9399
+RiskFit lambda=4,p(malicious),C,0.9958,0.9667
+CE,p(malicious),C,0.9925,0.9511
+Focal-Tversky,p(malicious),C,0.9948,0.9641
+MaxSim,p(malicious),C,0.9934,0.9541
+kNN (frozen),p(malicious),C,0.9694,0.9036
+LightGBM,p(malicious),C,0.9867,0.8729
+SetFit-LoRA,p(malicious),C,0.9925,0.9337
+Qwen3-LoRA,p(malicious),C,0.968,0.9127
+Decisions zero-shot,choice p(malicious),C,0.8469,0.5303
+Decisions zero-shot,predicate p(malicious),C,0.8276,0.4977
+Decisions + exemplar,choice p(malicious),C,0.991,0.846
+Decisions + exemplar,predicate p(malicious),C,0.9969,0.9419
